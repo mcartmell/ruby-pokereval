@@ -25,6 +25,7 @@ module PokerEvalAPI
 	callback :completion_function, [:int], :void
 	attach_function :myeval, [:pointer, :int, :string, :int, :int, :completion_function], :int
 
+	# Not using these yet
 	attach_function :StdDeck_StdRules_EVAL_TYPE, [:uint64, :int], :int
 	attach_function :wrap_StdDeck_MASK, [:int], :uint64
 	attach_function :TextToPokerEval, [:string], :uint64
@@ -80,20 +81,24 @@ class PokerEval
 
 		r_stages = {}
 
+		# 3..5 = for flop, turn, river
 		(3..5).each do |tot|
 			next if tot <= bsize
 			stage = stages[tot.to_s]
 
 			results = []
 
+			# simple callback to fetch results for each iteration
 			cb = Proc.new do |i|
 				results.push(i)
 			end
 
+			# run the eval
 			PokerEvalAPI.myeval(pocket, psize, board, bsize, tot, cb)
 
 			stats = []
 
+			# collect stats for each type of hand
 			results.each do |e|
 				stats[e] = (stats[e] || 0) + 1
 			end
@@ -108,10 +113,13 @@ class PokerEval
 				pct = (((stats[i] || 0) / total.to_f) * 100)
 				stats_name[HandTypes[i]] = pct
 			end
+			
+			# set percentages for this stage
 			r_stages[stage] = stats_name
 		end
-		return r_stages
 
+		# return percentages
+		return r_stages
 	end
 
 	def test
