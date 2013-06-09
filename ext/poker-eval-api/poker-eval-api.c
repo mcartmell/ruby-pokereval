@@ -5,6 +5,11 @@
 
 extern uint8 nBitsAndStrTable[StdDeck_N_RANKMASKS];
 
+#define SC sc
+#define SD sd
+#define SH sh
+#define SS ss
+
 StdDeck_CardMask TextToPokerEval(const char* strHand)
 {
     StdDeck_CardMask theHand, theCard;
@@ -28,88 +33,6 @@ StdDeck_CardMask TextToPokerEval(const char* strHand)
     }
     return theHand;
 }
-
-void evalSingleType(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
-	StdDeck_CardMask_OR(player, player, board);
-	int type = StdDeck_StdRules_EVAL_TYPE(player, tot);
-	callback(type);
-	return;
-}
-
-void evalSingle(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
-	StdDeck_CardMask_OR(player, player, board);
-	HandVal score = StdDeck_StdRules_EVAL_N(player, tot);
-	callback(score);
-	return;
-}
-
-int myeval(char* str_pocket, int npockets, char* str_board, int nboard, int totboard, void *callback(int)) {
-		// totboard = total cards wanted on board
-		int i = totboard - nboard; // total cards to enumerate
-		int tot = totboard + 2; // total cards including player
-    StdDeck_CardMask board;
-    StdDeck_CardMask dead;
-    StdDeck_CardMask pocket;
-    StdDeck_CardMask_RESET(pocket);
-    StdDeck_CardMask_RESET(board);
-    StdDeck_CardMask_RESET(dead);
-    StdDeck_CardMask pockets[ENUM_MAXPLAYERS];
-
-		pocket = TextToPokerEval(str_pocket);
-		board = TextToPokerEval(str_board);
-		StdDeck_CardMask_OR(dead,dead,pocket);
-		StdDeck_CardMask_OR(dead,dead,board);
-
-		StdDeck_CardMask_OR(pocket, pocket, board);
-
-		DECK_ENUMERATE_N_CARDS_D(StdDeck, board, i, dead, evalSingleType(pocket, board, tot, callback););
-		return 1;
-}
-
-
-/*
- * When run over seven cards, here are the distribution of hands:
- *        high hand: 23294460
- *             pair: 58627800
- *         two pair: 31433400
- *  three of a kind: 6461620
- *         straight: 6180020
- *            flush: 4047644
- *       full house: 3473184
- *   four of a kind: 224848
- *   straight flush: 41584
- *
- */
-
-#define SC sc
-#define SD sd
-#define SH sh
-#define SS ss
-
-/*
- * is_straight used to check for a straight by masking the ranks with four
- * copies of itself, each shifted one bit with respect to the
- * previous one.  So any sequence of five adjacent bits will still
- * be non-zero, but any gap will result in a zero value.  There's
- * a nice side-effect of leaving the top most bit set so we can use
- * it to set top_card.
- * Now we use a precomputed lookup table.  
- *
- */
-
-#if 0
-/* Keith's is-straight, which is still pretty good and uses one less table. */
-    if ( (ranks2  = ranks & (ranks << 1)) &&
-	 (ranks2 &=         (ranks << 2)) &&
-	 (ranks2 &=         (ranks << 3)) &&
-	 (ranks2 &=         (ranks << 4)) ) {
-        retval.eval_t.hand     = StdRules_HandType_STRAIGHT;
-        retval.eval_t.top_card = topCardTable[ranks2];
-    } else if ((ranks & StdDeck_FIVE_STRAIGHT) ==  StdDeck_FIVE_STRAIGHT) {
-        retval.eval_t.hand     = StdRules_HandType_STRAIGHT;
-        retval.eval_t.top_card = StdDeck_Ranks_5;
-    }
-#endif
 
 
 HandVal StdDeck_StdRules_EVAL_N( StdDeck_CardMask cards, int n_cards )
@@ -305,13 +228,113 @@ HandVal StdDeck_StdRules_EVAL_N( StdDeck_CardMask cards, int n_cards )
   assert(!"Logic error in StdDeck_StdRules_EVAL_N");
 }
 
+void evalSingleType(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
+	StdDeck_CardMask_OR(player, player, board);
+	int type = StdDeck_StdRules_EVAL_TYPE(player, tot);
+	callback(type);
+	return;
+}
+
+void evalSingle(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
+	StdDeck_CardMask_OR(player, player, board);
+	HandVal score = StdDeck_StdRules_EVAL_N(player, tot);
+	callback(score);
+	return;
+}
+
+HandVal Eval_Str_N (char* hand) {
+		StdDeck_CardMask thehand = TextToPokerEval(hand);
+		int n_cards = strlen(hand) / 2;
+		return StdDeck_StdRules_EVAL_N(thehand, n_cards);
+}
+
+int scoreTwoCards(char* str_pocket, char* str_board, void *callback(int)) {
+	StdDeck_CardMask board;
+	StdDeck_CardMask pocket;
+	StdDeck_CardMask dead;
+	StdDeck_CardMask opp;
+  StdDeck_CardMask_RESET(opp);
+  StdDeck_CardMask_RESET(pocket);
+  StdDeck_CardMask_RESET(board);
+  StdDeck_CardMask_RESET(dead);
+	pocket = TextToPokerEval(str_pocket);
+	board = TextToPokerEval(str_board);
+	int tot = (2 + (strlen(str_board) / 2));
+	StdDeck_CardMask_OR(dead,dead,pocket);
+	StdDeck_CardMask_OR(dead,dead,board);
+	DECK_ENUMERATE_2_CARDS_D(StdDeck, opp, dead, evalSingle(opp, board, tot, callback););
+	return 1;
+}
+
+int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int totboard, void *callback(int)) {
+		// totboard = total cards wanted on board
+		int i = totboard - nboard; // total cards to enumerate
+		int tot = totboard + 2; // total cards including player
+    StdDeck_CardMask board;
+    StdDeck_CardMask dead;
+    StdDeck_CardMask pocket;
+    StdDeck_CardMask_RESET(pocket);
+    StdDeck_CardMask_RESET(board);
+    StdDeck_CardMask_RESET(dead);
+    StdDeck_CardMask pockets[ENUM_MAXPLAYERS];
+
+		pocket = TextToPokerEval(str_pocket);
+		board = TextToPokerEval(str_board);
+		StdDeck_CardMask_OR(dead,dead,pocket);
+		StdDeck_CardMask_OR(dead,dead,board);
+
+		StdDeck_CardMask_OR(pocket, pocket, board);
+
+		DECK_ENUMERATE_N_CARDS_D(StdDeck, board, i, dead, evalSingleType(pocket, board, tot, callback););
+		return 1;
+}
+
+
+/*
+ * When run over seven cards, here are the distribution of hands:
+ *        high hand: 23294460
+ *             pair: 58627800
+ *         two pair: 31433400
+ *  three of a kind: 6461620
+ *         straight: 6180020
+ *            flush: 4047644
+ *       full house: 3473184
+ *   four of a kind: 224848
+ *   straight flush: 41584
+ *
+ */
+
+/*
+ * is_straight used to check for a straight by masking the ranks with four
+ * copies of itself, each shifted one bit with respect to the
+ * previous one.  So any sequence of five adjacent bits will still
+ * be non-zero, but any gap will result in a zero value.  There's
+ * a nice side-effect of leaving the top most bit set so we can use
+ * it to set top_card.
+ * Now we use a precomputed lookup table.  
+ *
+ */
+
+#if 0
+/* Keith's is-straight, which is still pretty good and uses one less table. */
+    if ( (ranks2  = ranks & (ranks << 1)) &&
+	 (ranks2 &=         (ranks << 2)) &&
+	 (ranks2 &=         (ranks << 3)) &&
+	 (ranks2 &=         (ranks << 4)) ) {
+        retval.eval_t.hand     = StdRules_HandType_STRAIGHT;
+        retval.eval_t.top_card = topCardTable[ranks2];
+    } else if ((ranks & StdDeck_FIVE_STRAIGHT) ==  StdDeck_FIVE_STRAIGHT) {
+        retval.eval_t.hand     = StdRules_HandType_STRAIGHT;
+        retval.eval_t.top_card = StdDeck_Ranks_5;
+    }
+#endif
+
+
+
 #undef SC
 #undef SH
 #undef SD
 #undef SS
-
-#endif
-
 
 int 
 StdDeck_StdRules_EVAL_TYPE( StdDeck_CardMask cards, int n_cards )

@@ -23,18 +23,14 @@ module PokerEvalAPI
 	ffi_lib File.dirname(__FILE__) + '/../ext/poker-eval-api/poker-eval-api.so'
 
 	callback :completion_function, [:int], :void
-	attach_function :myeval, [:pointer, :int, :string, :int, :int, :completion_function], :int
+	attach_function :evalOuts, [:pointer, :int, :string, :int, :int, :completion_function], :int
+	attach_function :scoreTwoCards, [:string, :string, :completion_function], :int
+	attach_function :Eval_Str_N, [:string], :int
 
-	# Not using these yet
 	attach_function :StdDeck_StdRules_EVAL_TYPE, [:uint64, :int], :int
-	attach_function :wrap_StdDeck_MASK, [:int], :uint64
+	attach_function :StdDeck_StdRules_EVAL_N, [:uint64, :int], :int
 	attach_function :TextToPokerEval, [:string], :uint64
-	attach_function :wrap_StdDeck_MAKE_CARD, [:uint, :uint], :int
-	attach_function :wrap_StdDeck_CardMask_OR, [:pointer, :pointer], :pointer
 
-	Callback = Proc.new do |p|
-		@results.push(p)
-	end
 end
 
 class PokerEval
@@ -51,22 +47,29 @@ class PokerEval
 	"StraightFlush"
 	]
 
-	def make_card(r,s)
-		idx = PokerEvalAPI.wrap_StdDeck_MAKE_CARD(r,s)
-		mask = PokerEvalAPI.wrap_StdDeck_MASK(idx)
-		card = PokerEvalAPI::CardMask.new
-		card[:cards_n] = mask
-		return card
+	def score_hand(hand, board)
+		return PokerEvalAPI.Eval_Str_N(hand + board)
 	end
 
-	def gen_pockets(pockets)
-		strptrs = []
-		strptrs = pockets.map {|e| FFI::MemoryPointer.from_string(e)}
-		argv = FFI::MemoryPointer.new(:pointer, strptrs.length)
-		strptrs.each_with_index do |p, i|
-			argv[i].put_pointer(0, p)
+	def compare_hands(p1,p2,board)
+		p1score = PokerEvalAPI.Eval_Str_N(p1 + board)
+		p2score = PokerEvalAPI.Eval_Str_N(p2 + board)
+		return -1 if p1score < p2score
+		return 0 if p1score == p2score
+		return 1 if p1score > p2score
+	end
+
+	def hand_strength(pocket, board, opponents = 1)
+		ahead = tied = behind = 0
+		score = PokerEvalAPI.Eval_Str_N(pocket + board)
+		cb = Proc.new do |i|
+			ahead += 1 if score > i
+			tied += 1 if score == i
+			behind += 1 if score < i
 		end
-		return argv
+		PokerEvalAPI.scoreTwoCards(pocket, board, cb)
+		handstrength = (ahead+tied/2.0) / (ahead+tied+behind)
+		return handstrength ** opponents
 	end
 
 	def eval_outs(pocket, board)
@@ -94,7 +97,7 @@ class PokerEval
 			end
 
 			# run the eval
-			PokerEvalAPI.myeval(pocket, psize, board, bsize, tot, cb)
+			PokerEvalAPI.evalOuts(pocket, psize, board, bsize, tot, cb)
 
 			stats = []
 
@@ -121,10 +124,4 @@ class PokerEval
 		# return percentages
 		return r_stages
 	end
-
-	def test
-		res = eval_outs("7s8s", "")
-		pp res
-	end
-
 end

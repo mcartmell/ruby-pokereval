@@ -5,6 +5,6 @@ def link_static?
 end
 
 $LDFLAGS << " -Wl,-R/usr/local/lib -lpoker-eval -L/usr/local/lib"
-$CFLAGS << " -I/usr/local/include/poker-eval -fPIC -L/usr/local/lib"
+$CFLAGS << " -I/usr/include/poker-eval -I/usr/local/include/poker-eval -fPIC -L/usr/local/lib"
 have_library "poker-eval"
 create_makefile('poker-eval-api/poker-eval-api')
