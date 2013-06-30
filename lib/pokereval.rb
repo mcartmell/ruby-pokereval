@@ -1,6 +1,7 @@
 require 'ffi'
 require 'pp'
 
+# The FFI wrapper module
 module PokerEvalAPI
 	extend FFI::Library
 	@results = []
@@ -12,39 +13,60 @@ module PokerEvalAPI
 		:hearts, :uint16
 	end
 
+	# A struct representing a cardmask
 	class CardMask < FFI::Struct
 		layout :cards_n, :uint64
 
+		# Add cards from another cardmask to this set
+		# @param other [PokerEvalAPI::CardMask]
+		#
+		# @example
+		#		cardmask << other_cardmask
 		def << (other)
 			self[:cards_n] = self[:cards_n] | other[:cards_n]
 		end
 
+		# Get the raw integer from this struct
 		def cards_n
 			self[:cards_n]
 		end
 
+		# Returns an integer score representing the value of this hand, for use in comparisons
+		#
+		# @param i [Integer] The number of cards in the hand
 		def eval(i)
 			return PokerEvalAPI.StdDeck_StdRules_EVAL_N(self,i)
 		end
 
+		# Returns a string representation of these cards
 		def to_s
 			return PokerEvalAPI.wrap_StdDeck_maskString(self).gsub(/\s+/, '')
 		end
 
+		# Returns the number of cards in this set
 		def count
 			return PokerEvalAPI.wrap_StdDeck_numCards(self)
 		end
 
+		# Adds a single card to this set by specifying its index
+		#
+		#	@param i [Integer] The card index to add
 		def set(i)
 			mask = PokerEvalAPI.wrap_StdDeck_MASK(i)
 			self << mask
 		end
 
+		# Returns true if the given card is in this set
+		#
+		# @param i [Integer] The card index to check
 		def is_set(i)
 			mask = PokerEvalAPI.wrap_StdDeck_MASK(i)
 			return any_set(mask)
 		end
 
+		# Returns true if any of the given cards are in the set
+		#
+		# @param m [PokerEvalAPI::CardMask] The cards to check
 		def any_set(m)
 			return ((self[:cards_n] & m[:cards_n]) != 0)
 		end
@@ -57,18 +79,17 @@ module PokerEvalAPI
 	ffi_lib File.dirname(__FILE__) + '/../ext/poker-eval-api/poker-eval-api.so'
 
 	callback :completion_function, [:int, CardMask.by_value], :void
+	attach_function :TextToPokerEval, [:string], CardMask.by_value
+	attach_function :StdDeck_StdRules_EVAL_TYPE, [:uint64, :int], :int
+	attach_function :StdDeck_StdRules_EVAL_N, [CardMask.by_value, :int], :int
+	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
+	attach_function :handPotential, [:string, :string, :pointer, :int], :int
 	attach_function :evalOuts, [:pointer, :int, :string, :int, :int, :completion_function], :int
 	attach_function :scoreTwoCards, [:string, :string, :completion_function], :int
 	attach_function :Eval_Str_N, [:string], :int
 	attach_function :Eval_Str_Type, [:string], :int
-
-	attach_function :StdDeck_StdRules_EVAL_TYPE, [:uint64, :int], :int
-	attach_function :StdDeck_StdRules_EVAL_N, [CardMask.by_value, :int], :int
-	attach_function :TextToPokerEval, [:string], CardMask.by_value
 	attach_function :TextToPtr, [:string], :pointer
 	attach_function :Eval_Ptr, [:pointer, :int], :int
-	attach_function :handPotential, [:string, :string, :pointer, :int], :int
-	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
 	attach_function :wrap_StdDeck_MAKE_CARD, [:int, :int], :int
 	attach_function :wrap_StdDeck_MASK, [:int], CardMask.by_value
 	attach_function :wrap_StdDeck_maskString, [CardMask.by_value], :string
@@ -110,16 +131,31 @@ class PokerEval
 		7 => %w{44 33 22 K8s K7s K6s K5s K4s K3s K2s Q8s T7s 64s 53s 43s J9o T9o 98o}
 	}
 
-
+	# Scores a single hand, passed by string
+	#
+	# @param hand [String] The player's pocket cards
+	# @param board [String] The board cards
+	# @return [Integer] The score of the hand
 	def score_hand(hand, board)
 		return PokerEvalAPI.Eval_Str_N(hand + board)
 	end
 
+	# Classifies the hand (one pair, two pair, flush etc.)
+	#
+	# @param hand [String] The player's pocket cards
+	# @param board [String] The board cards
+	# @return [String] A string representing the hand type
 	def type_hand(hand, board)
 		type = PokerEvalAPI.Eval_Str_Type(hand + board)
 		return HandTypes[type]
 	end
 
+	# Compares two hands by evaluating them against the current board
+	# 
+	# @param p1 [String] The first player's pocket cards
+	# @param p2 [String] The second player's pocket cards
+	# @param board [String] The board cards
+	# @return [Integer] 1 if p1 wins, -1 if p2 wins, 0 of they are equal
 	def compare_hands(p1,p2,board)
 		p1score = PokerEvalAPI.Eval_Str_N(p1 + board)
 		p2score = PokerEvalAPI.Eval_Str_N(p2 + board)
@@ -128,6 +164,12 @@ class PokerEval
 		return 1 if p1score > p2score
 	end
 
+	# Returns the EHS of the current hand
+	# 
+	# @param pocket [String] The player's pocket cards
+	# @param board [String] The board cards
+	# @param hs [Integer] (optional) The hand strength to use in the calculation. If not specified, will be calculated
+	# @param use_npot [Boolean] (optional, default false) Whether or not to return the negative potential
 	def effective_hand_strength(pocket, board, hs = nil, use_npot = false)
 		hs ||= hand_strength(pocket, board)
 		return 0 if pocket.empty? || board.empty?
@@ -145,14 +187,28 @@ class PokerEval
 		return weight_table[cards.cards_n] || 1
 	end
 
+	# Returns the hand strength using the poker-eval library
+	#
+	# @return [Float]
 	def hs(*a)
 		return PokerEvalAPI.handStrength(*a)
 	end
 
+	# Returns the hand strength using the poker-eval library
+	#
+	# @param pocket [String] The player's pocket cards
+	# @param board [String] The player's board cards
+	# @return [Float]
 	def str_to_hs(pocket, board)
 		return hs(get_cards(pocket), get_cards(board))
 	end
 
+	# Returns the hand strength using Ruby
+	#
+	# @param pocket [String] The player's pocket cards
+	# @param board [String] The board cards
+	# @param opponents [Integer] (default: 1) The number of opponents
+	#	@param weight_table [Hash] (default: {}) A weight table to adjust the score given to each pair of opponent's cards.
 	def hand_strength(pocket, board, opponents = 1, weight_table = {})
 		ahead = tied = behind = 0
 		score = PokerEvalAPI.Eval_Str_N(pocket + board)
@@ -173,6 +229,13 @@ class PokerEval
 		return handstrength ** opponents
 	end
 
+	# Does a montecarlo simulation to estimate the strength of a given hand
+	#	
+	# @option options [String] :pocket The player's hole cards
+	# @option options [String] :board The board cards
+	# @option options [Integer] :iterations The number of montecarlo simulations
+	# @option options [Integer] :num_opponents The number of opponent hands to simulate
+	# @return [Float] The percentage of times the player's hand wins
 	def get_equity(options = {})
 		defaults = {
 			pocket: '',
@@ -215,6 +278,13 @@ class PokerEval
 		return equity
 	end
 
+	# Returns the hand potential (positive and negative) of the current hand
+	# By default will only do a one-card lookahead
+	#
+	# @param pocket [String] The player's hole cards
+	# @param board [String] The board cards
+	# @param maxcards [Integer] The maximum number of cards to score (7 is 2-card lookahead, 6 is 1-card)
+	# @return [Float] 
 	def hand_potential(pocket, board, maxcards = 6)
 		if ((board.length / 2) == 5)
 			return [0,0]
@@ -277,10 +347,12 @@ class PokerEval
 		return r_stages
 	end
 
+	# Returns a random card (as a PokerEvalAPI::CardMask)
 	def random_card
 		return PokerEvalAPI.wrap_StdDeck_MASK(rand(52))
 	end
 
+	#	Performs a montecarlo simulation, yielding the generated cards
 	def montecarlo(dead, num_cards, num_iter)
 		num_iter.times do
 			cards = new_cards
@@ -292,6 +364,7 @@ class PokerEval
 		end
 	end
 
+	# Returns a random pair of cards that are not contained in the given string of cards
 	def get_random_hand_not_in_str(str)
 		used = get_cards(str)
 		cards = new_cards
@@ -300,6 +373,7 @@ class PokerEval
 		return cards.to_s
 	end
 
+	# Adds one random card that's not in the given set of used cards 
 	def add_random_card_not_in(cards, used)
 		loop do
 			card = random_card
