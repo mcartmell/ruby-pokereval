@@ -4,6 +4,7 @@ An interface to the [poker-eval](http://pokersource.sourceforge.net/) C library,
 
 # Example usage
 
+```ruby
 		require 'pokereval'
 		pe = PokerEval.new
 
@@ -21,6 +22,7 @@ An interface to the [poker-eval](http://pokersource.sourceforge.net/) C library,
 
 		# Return the probability of hitting each type of hand on later stages
 		outs = pe.eval_outs("7s7c", "8h9dJs")
+```
 
 # See also
 
