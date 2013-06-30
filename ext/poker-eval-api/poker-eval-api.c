@@ -8,38 +8,6 @@
 
 extern uint8 nBitsAndStrTable[StdDeck_N_RANKMASKS];
 
-StdDeck_CardMask TextToPokerEval(const char* strHand)
-{
-    StdDeck_CardMask theHand, theCard;
-    StdDeck_CardMask_RESET(theHand);
-
-    if (strHand && strlen(strHand))
-    {
-        int cardIndex = -1;
-        const char* curCard = strHand;
-        while (*curCard)
-        {
-            // Take the card text and convert it to an index (0..51)
-            StdDeck_stringToCard(curCard, &cardIndex);
-            // Convert the card index to a mask
-            theCard = StdDeck_MASK(cardIndex);
-            // Add the card (mask) to the hand
-            StdDeck_CardMask_OR(theHand, theHand, theCard);
-            // Advance to the next card (if any)
-            curCard += 2;
-        }
-    }
-    return theHand;
-}
-
-StdDeck_CardMask *TextToPtr(const char* strHand) {
-	StdDeck_CardMask theHand = TextToPokerEval(strHand);
-	StdDeck_CardMask *ptr = malloc(sizeof *ptr);
-	*ptr = theHand;
-	return ptr;
-}
-
-
 #define SC sc
 #define SD sd
 #define SH sh
@@ -239,23 +207,27 @@ HandVal StdDeck_StdRules_EVAL_N( StdDeck_CardMask cards, int n_cards )
 }
 
 void evalSingleType(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
+	int type;
 	StdDeck_CardMask_OR(player, player, board);
-	int type = StdDeck_StdRules_EVAL_TYPE(player, tot);
+	type = StdDeck_StdRules_EVAL_TYPE(player, tot);
 	callback(type);
 	return;
 }
 
 void evalSingle(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int, StdDeck_CardMask)) {
+	HandVal score;
+
 	StdDeck_CardMask orig_cards = player;
 	StdDeck_CardMask_OR(player, player, board);
-	HandVal score = StdDeck_StdRules_EVAL_N(player, tot);
+	score = StdDeck_StdRules_EVAL_N(player, tot);
 	callback(score, orig_cards);
 	return;
 }
 
 HandVal Eval_Str_N (char* hand) {
+		int n_cards;
 		StdDeck_CardMask thehand = TextToPokerEval(hand);
-		int n_cards = strlen(hand) / 2;
+		n_cards = strlen(hand) / 2;
 		return StdDeck_StdRules_EVAL_N(thehand, n_cards);
 }
 
@@ -282,24 +254,28 @@ void tallyScore (int tally[], int us, int them) {
 }
 
 void evalAndTally(StdDeck_CardMask opp, StdDeck_CardMask board, HandVal us, int tot, int tally[]) {
+	HandVal score;
 	StdDeck_CardMask_OR(opp, opp, board);
-	HandVal score = StdDeck_StdRules_EVAL_N(opp, tot);
+	score = StdDeck_StdRules_EVAL_N(opp, tot);
 	tallyScore(tally, us, score);
 }
 
 double handStrength(StdDeck_CardMask us, StdDeck_CardMask board) {
+	StdDeck_CardMask opp;
 	StdDeck_CardMask dead;
+	int tot;
+	HandVal ourscore;
+	int tally[3] = { 0 };
+
   StdDeck_CardMask_RESET(dead);
 	StdDeck_CardMask_OR(dead,dead,us);
 	StdDeck_CardMask_OR(dead,dead,board);
 
-	StdDeck_CardMask opp;
   StdDeck_CardMask_RESET(opp);
 
-	int tot = StdDeck_numCards(dead);
-	HandVal ourscore = StdDeck_StdRules_EVAL_N(dead, tot);
+	tot = StdDeck_numCards(dead);
+	ourscore = StdDeck_StdRules_EVAL_N(dead, tot);
 
-	int tally[3] = { 0 };
 	DECK_ENUMERATE_2_CARDS_D(StdDeck, opp, dead, evalAndTally(opp, board, ourscore, tot, tally););
 	return ((tally[2] + tally[1] / 2.0) / (tally[0] + tally[1] + tally[2]));
 }
@@ -309,13 +285,15 @@ int scoreTwoCards(char* str_pocket, char* str_board, void *callback(int, StdDeck
 	StdDeck_CardMask pocket;
 	StdDeck_CardMask dead;
 	StdDeck_CardMask opp;
+	int tot;
+
   StdDeck_CardMask_RESET(opp);
   StdDeck_CardMask_RESET(pocket);
   StdDeck_CardMask_RESET(board);
   StdDeck_CardMask_RESET(dead);
 	pocket = TextToPokerEval(str_pocket);
 	board = TextToPokerEval(str_board);
-	int tot = (2 + (strlen(str_board) / 2));
+	tot = (2 + (strlen(str_board) / 2));
 	StdDeck_CardMask_OR(dead,dead,pocket);
 	StdDeck_CardMask_OR(dead,dead,board);
 	DECK_ENUMERATE_2_CARDS_D(StdDeck, opp, dead, evalSingle(opp, board, tot, callback););
@@ -323,11 +301,13 @@ int scoreTwoCards(char* str_pocket, char* str_board, void *callback(int, StdDeck
 }
 
 void handPotInnerInner(StdDeck_CardMask turnriver, StdDeck_CardMask ourcards, StdDeck_CardMask oppcards, StdDeck_CardMask board, int index, int hp[][3], int maxcards) {
+	HandVal ourrank;
+	HandVal opprank;
 	StdDeck_CardMask_OR(turnriver, turnriver, board);
 	StdDeck_CardMask_OR(ourcards, ourcards, turnriver);
 	StdDeck_CardMask_OR(oppcards, oppcards, turnriver);
-	HandVal ourrank = StdDeck_StdRules_EVAL_N(ourcards, maxcards);
-	HandVal opprank = StdDeck_StdRules_EVAL_N(oppcards, maxcards);
+	ourrank = StdDeck_StdRules_EVAL_N(ourcards, maxcards);
+	opprank = StdDeck_StdRules_EVAL_N(oppcards, maxcards);
 	if (ourrank > opprank) {
 		hp[index][2] += 1;
 	}
@@ -340,11 +320,14 @@ void handPotInnerInner(StdDeck_CardMask turnriver, StdDeck_CardMask ourcards, St
 	return;
 }
 
-void handPotInner(int ourrank, int hp[][3], int hptotal[], StdDeck_CardMask ourcards, StdDeck_CardMask board, StdDeck_CardMask oppcards, StdDeck_CardMask dead, int nboard, int maxcards) {
-	StdDeck_CardMask_OR(oppcards, oppcards, board);
-	HandVal opprank = StdDeck_StdRules_EVAL_N(oppcards, 2 + nboard);
-
+void handPotInner(HandVal ourrank, int hp[][3], int hptotal[], StdDeck_CardMask ourcards, StdDeck_CardMask board, StdDeck_CardMask oppcards, StdDeck_CardMask dead, int nboard, int maxcards) {
+	StdDeck_CardMask turnriver;
+	HandVal opprank;
 	int index;
+	int i;
+
+	StdDeck_CardMask_OR(oppcards, oppcards, board);
+	opprank = StdDeck_StdRules_EVAL_N(oppcards, 2 + nboard);
 
 	if (ourrank > opprank) {
 		index = 2;
@@ -357,10 +340,9 @@ void handPotInner(int ourrank, int hp[][3], int hptotal[], StdDeck_CardMask ourc
 	hptotal[index] += 1;
 
 	StdDeck_CardMask_OR(dead, dead, oppcards)
-	StdDeck_CardMask turnriver;
   StdDeck_CardMask_RESET(turnriver);
 
-	int i = ((nboard > 3) ? (5 - nboard) : (5 - (7 - maxcards) - nboard));
+	i = ((nboard > 3) ? (5 - nboard) : (5 - (7 - maxcards) - nboard));
 
 	DECK_ENUMERATE_N_CARDS_D(StdDeck, turnriver, i, dead, handPotInnerInner(turnriver, ourcards, oppcards, board, index, hp, maxcards););
 }
@@ -368,9 +350,10 @@ void handPotInner(int ourrank, int hp[][3], int hptotal[], StdDeck_CardMask ourc
 int handPotential(char* str_pocket, char* str_board, char** ppot, int maxcards) {
 	int hp[3][3] = {{0}};
 	int hptotal[3] = {0};
-	int ahead = 2;
-	int tied = 1;
-	int behind = 0;
+	int nboard;
+	float mult, ppott, npott, ppct, npct;
+	char tmpout[80];
+	HandVal ourrank;
 	
 	StdDeck_CardMask board;
 	StdDeck_CardMask pocket;
@@ -387,20 +370,19 @@ int handPotential(char* str_pocket, char* str_board, char** ppot, int maxcards) 
 	pocket = TextToPokerEval(str_pocket);
 	board = TextToPokerEval(str_board);
 
-	int nboard = strlen(str_board) / 2;
+	nboard = strlen(str_board) / 2;
 
 	StdDeck_CardMask_OR(ourcards,ourcards,pocket);
 	StdDeck_CardMask_OR(ourcards,ourcards,board);
 	StdDeck_CardMask_OR(dead,dead,ourcards);
-	HandVal ourrank = StdDeck_StdRules_EVAL_N(ourcards, 2 + nboard);
+	ourrank = StdDeck_StdRules_EVAL_N(ourcards, 2 + nboard);
 	DECK_ENUMERATE_2_CARDS_D(StdDeck, opp, dead, handPotInner(ourrank, hp, hptotal, ourcards, board, opp, dead, nboard, maxcards););
 
-	float mult = (((2 + nboard == 5) && maxcards == 7) ? 990.0f : 45.0f);
-	float ppott = (hp[0][2] + hp[0][1]/2 + hp[1][2]/2);
-	float ppct = ppott / (mult * (hptotal[0] + hptotal[1] / 2.0));
-	float npott = (hp[2][0] + hp[1][0]/2 + hp[2][1]/2);
-	float npct = npott / (mult * (hptotal[2] + hptotal[1] / 2.0));
-	char tmpout[80];
+	mult = (((2 + nboard == 5) && maxcards == 7) ? 990.0f : 45.0f);
+	ppott = (hp[0][2] + hp[0][1]/2 + hp[1][2]/2);
+	ppct = ppott / (mult * (hptotal[0] + hptotal[1] / 2.0));
+	npott = (hp[2][0] + hp[1][0]/2 + hp[2][1]/2);
+	npct = npott / (mult * (hptotal[2] + hptotal[1] / 2.0));
   sprintf( tmpout, "%f|%f",ppct,npct);
 	*ppot = strdup(tmpout);
 
@@ -417,7 +399,6 @@ int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int to
     StdDeck_CardMask_RESET(pocket);
     StdDeck_CardMask_RESET(board);
     StdDeck_CardMask_RESET(dead);
-    StdDeck_CardMask pockets[ENUM_MAXPLAYERS];
 
 		pocket = TextToPokerEval(str_pocket);
 		board = TextToPokerEval(str_board);
@@ -595,3 +576,36 @@ int wrap_StdDeck_CardMask_ANY_SET(StdDeck_CardMask mask1, StdDeck_CardMask mask2
 StdDeck_CardMask wrap_StdDeck_CardMask_RESET(void) { StdDeck_CardMask mask; StdDeck_CardMask_RESET(mask); return mask; }
 int wrap_StdDeck_CardMask_IS_EMPTY(StdDeck_CardMask mask) { return StdDeck_CardMask_IS_EMPTY(mask); }
 int wrap_StdDeck_CardMask_EQUAL(StdDeck_CardMask mask1, StdDeck_CardMask mask2) { return StdDeck_CardMask_EQUAL(mask1, mask2); }
+
+StdDeck_CardMask TextToPokerEval(char* strHand)
+{
+    StdDeck_CardMask theHand, theCard;
+    StdDeck_CardMask_RESET(theHand);
+
+    if (strHand && strlen(strHand))
+    {
+        int cardIndex = -1;
+        char* curCard = strHand;
+        while (*curCard)
+        {
+            // Take the card text and convert it to an index (0..51)
+            StdDeck_stringToCard(curCard, &cardIndex);
+            // Convert the card index to a mask
+            theCard = StdDeck_MASK(cardIndex);
+            // Add the card (mask) to the hand
+            StdDeck_CardMask_OR(theHand, theHand, theCard);
+            // Advance to the next card (if any)
+            curCard += 2;
+        }
+    }
+    return theHand;
+}
+
+StdDeck_CardMask *TextToPtr(char* strHand) {
+	StdDeck_CardMask theHand = TextToPokerEval(strHand);
+	StdDeck_CardMask *ptr = malloc(sizeof *ptr);
+	*ptr = theHand;
+	return ptr;
+}
+
+
