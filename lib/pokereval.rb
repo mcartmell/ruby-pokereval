@@ -19,12 +19,16 @@ module PokerEvalAPI
 			self[:cards_n] = self[:cards_n] | other[:cards_n]
 		end
 
+		def cards_n
+			self[:cards_n]
+		end
+
 		def eval(i)
 			return PokerEvalAPI.StdDeck_StdRules_EVAL_N(self,i)
 		end
 
 		def to_s
-			return PokerEvalAPI.wrap_StdDeck_maskString(self)
+			return PokerEvalAPI.wrap_StdDeck_maskString(self).gsub(/\s+/, '')
 		end
 
 		def count
@@ -33,7 +37,7 @@ module PokerEvalAPI
 
 		def set(i)
 			mask = PokerEvalAPI.wrap_StdDeck_MASK(i)
-			self | mask
+			self << mask
 		end
 
 		def is_set(i)
@@ -44,7 +48,6 @@ module PokerEvalAPI
 		def any_set(m)
 			return ((self[:cards_n] & m[:cards_n]) != 0)
 		end
-
 	end
 
 	def self.results
@@ -53,7 +56,7 @@ module PokerEvalAPI
 
 	ffi_lib File.dirname(__FILE__) + '/../ext/poker-eval-api/poker-eval-api.so'
 
-	callback :completion_function, [:int], :void
+	callback :completion_function, [:int, CardMask.by_value], :void
 	attach_function :evalOuts, [:pointer, :int, :string, :int, :int, :completion_function], :int
 	attach_function :scoreTwoCards, [:string, :string, :completion_function], :int
 	attach_function :Eval_Str_N, [:string], :int
@@ -64,11 +67,14 @@ module PokerEvalAPI
 	attach_function :TextToPokerEval, [:string], CardMask.by_value
 	attach_function :TextToPtr, [:string], :pointer
 	attach_function :Eval_Ptr, [:pointer, :int], :int
-	attach_function :handPotential, [:string, :string, :pointer], :int
+	attach_function :handPotential, [:string, :string, :pointer, :int], :int
+	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
 	attach_function :wrap_StdDeck_MAKE_CARD, [:int, :int], :int
 	attach_function :wrap_StdDeck_MASK, [:int], CardMask.by_value
 	attach_function :wrap_StdDeck_maskString, [CardMask.by_value], :string
 	attach_function :wrap_StdDeck_numCards, [CardMask.by_value], :int
+	attach_function :wrap_StdDeck_RANK, [:uint], :uint
+	attach_function :wrap_StdDeck_SUIT, [:uint], :uint
 
 end
 
@@ -85,6 +91,25 @@ class PokerEval
 	"Quads",
 	"StraightFlush"
 	]
+
+	Ranks = {
+		A: 14,
+		K: 13,
+		Q: 12,
+		J: 11,
+		T: 10
+	}
+
+	HandGroups = {
+		1 => %w{AA KK QQ JJ AKs},
+		2 => %w{TT AQs AJs KQs AKo},
+		3 => %w{99 ATs KJs QJs TJs AQo},
+		4 => %w{88 KTs QTs J9s T9s 98s AJo KQo},
+		5 => %w{77 A9s A8s A7s A6s A5s A4s A3s A2s Q9s T8s 97s 87s 76s KJo QJo JTo},
+		6 => %w{66 55 K9s J8s 86s 75s 54s ATo KTo QTo},
+		7 => %w{44 33 22 K8s K7s K6s K5s K4s K3s K2s Q8s T7s 64s 53s 43s J9o T9o 98o}
+	}
+
 
 	def score_hand(hand, board)
 		return PokerEvalAPI.Eval_Str_N(hand + board)
@@ -103,21 +128,46 @@ class PokerEval
 		return 1 if p1score > p2score
 	end
 
-	def effective_hand_strength(pocket, board)
-		hs = hand_strength(pocket, board)
+	def effective_hand_strength(pocket, board, hs = nil, use_npot = false)
+		hs ||= hand_strength(pocket, board)
+		return 0 if pocket.empty? || board.empty?
 		(ppot, npot) = hand_potential(pocket, board)
+		npot = 0 unless use_npot
 		ehs = hs * (1 - npot) + (1 - hs) * ppot
-		return ehs
+		return {
+			ehs: ehs,
+			ppot: ppot,
+			npot: npot
+		}
 	end
 
-	def hand_strength(pocket, board, opponents = 1)
+	def get_weight_from_table(cards, weight_table = {})
+		return weight_table[cards.cards_n] || 1
+	end
+
+	def hs(*a)
+		return PokerEvalAPI.handStrength(*a)
+	end
+
+	def str_to_hs(pocket, board)
+		return hs(get_cards(pocket), get_cards(board))
+	end
+
+	def hand_strength(pocket, board, opponents = 1, weight_table = {})
 		ahead = tied = behind = 0
 		score = PokerEvalAPI.Eval_Str_N(pocket + board)
-		cb = Proc.new do |i|
+		weighted_proc = Proc.new do |i, cards|
+			w = get_weight_from_table(cards, weight_table)
+			ahead += w if score > i
+			tied += w if score == i
+			behind += w if score < i
+		end
+		normal_proc =  Proc.new do |i, cards|
 			ahead += 1 if score > i
 			tied += 1 if score == i
 			behind += 1 if score < i
 		end
+		cb = weight_table.empty? ? normal_proc : weighted_proc
 		PokerEvalAPI.scoreTwoCards(pocket, board, cb)
 		handstrength = (ahead+tied/2.0) / (ahead+tied+behind)
 		return handstrength ** opponents
@@ -165,9 +215,12 @@ class PokerEval
 		return equity
 	end
 
-	def hand_potential(pocket, board)
+	def hand_potential(pocket, board, maxcards = 6)
+		if ((board.length / 2) == 5)
+			return [0,0]
+		end
 		ppot = FFI::MemoryPointer.new(:pointer, 1);
-		PokerEvalAPI.handPotential(pocket, board, ppot)
+		PokerEvalAPI.handPotential(pocket, board, ppot, maxcards)
 		return ppot.read_pointer.read_string.split("|").map{|e| e.to_f}
 	end
 
@@ -239,6 +292,14 @@ class PokerEval
 		end
 	end
 
+	def get_random_hand_not_in_str(str)
+		used = get_cards(str)
+		cards = new_cards
+		add_random_card_not_in(cards, used)
+		add_random_card_not_in(cards, used)
+		return cards.to_s
+	end
+
 	def add_random_card_not_in(cards, used)
 		loop do
 			card = random_card
@@ -272,4 +333,49 @@ class PokerEval
 	def get_cards(str)
 		return PokerEvalAPI.TextToPokerEval(str)
 	end
+
+	def mask_to_str(cards_n)
+		cm = PokerEvalAPI::CardMask.new
+		cm[:cards_n] = cards_n
+		return cm.to_s
+	end
+
+	def rank_to_num(rank)
+		return Ranks[rank.to_sym] || rank.to_i
+	end
+
+	def card_rank(card)
+		return Ranks[card[0].to_sym] || card[0].to_i
+	end
+
+	def str_to_abbr(str)
+		chars = str.split(//)
+		ranks = [chars[0], chars[2]].sort {|b,a| (Ranks[a.to_sym] || a.to_i) <=> (Ranks[b.to_sym] || b.to_i)}
+		suited = ''
+		if chars[1] == chars[3] 
+			suited = 's'
+		elsif chars[0] != chars[2]
+			suited = 'o'
+		end
+		return ranks.join('') + suited
+	end
+
+	def card_idx_to_rank(idx)
+		return PokerEvalAPI.wrap_StdDeck_RANK(idx)
+	end
+
+	def card_idx_to_suit(idx)
+		return PokerEvalAPI.wrap_StdDeck_SUIT(idx)
+	end
+
+	def hand_to_sklansky_group(hand_str)
+		abbr = str_to_abbr(hand_str)
+		HandGroups.each do |group, hands|
+			if hands.include?(abbr)
+				return group
+			end
+		end
+		return 8
+	end
+
 end
