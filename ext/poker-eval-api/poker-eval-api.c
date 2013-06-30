@@ -206,11 +206,11 @@ HandVal StdDeck_StdRules_EVAL_N( StdDeck_CardMask cards, int n_cards )
   assert(!"Logic error in StdDeck_StdRules_EVAL_N");
 }
 
-void evalSingleType(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int)) {
+void evalSingleType(StdDeck_CardMask player, StdDeck_CardMask board, int tot, void *callback(int, StdDeck_CardMask)) {
 	int type;
 	StdDeck_CardMask_OR(player, player, board);
 	type = StdDeck_StdRules_EVAL_TYPE(player, tot);
-	callback(type);
+	callback(type, player);
 	return;
 }
 
@@ -389,7 +389,7 @@ int handPotential(char* str_pocket, char* str_board, char** ppot, int maxcards) 
 	return 1;
 }
 
-int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int totboard, void *callback(int)) {
+int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int totboard, void *callback(int, StdDeck_CardMask)) {
 		// totboard = total cards wanted on board
 		int i = totboard - nboard; // total cards to enumerate
 		int tot = totboard + 2; // total cards including player
@@ -406,6 +406,7 @@ int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int to
 		StdDeck_CardMask_OR(dead,dead,board);
 
 		StdDeck_CardMask_OR(pocket, pocket, board);
+		printf("I'm OK!\n");
 
 		DECK_ENUMERATE_N_CARDS_D(StdDeck, board, i, dead, evalSingleType(pocket, board, tot, callback););
 		return 1;

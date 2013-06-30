@@ -84,7 +84,7 @@ module PokerEvalAPI
 	attach_function :StdDeck_StdRules_EVAL_N, [CardMask.by_value, :int], :int
 	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
 	attach_function :handPotential, [:string, :string, :pointer, :int], :int
-	attach_function :evalOuts, [:pointer, :int, :string, :int, :int, :completion_function], :int
+	attach_function :evalOuts, [:string, :int, :string, :int, :int, :completion_function], :int
 	attach_function :scoreTwoCards, [:string, :string, :completion_function], :int
 	attach_function :Eval_Str_N, [:string], :int
 	attach_function :Eval_Str_Type, [:string], :int
@@ -284,7 +284,7 @@ class PokerEval
 	# @param pocket [String] The player's hole cards
 	# @param board [String] The board cards
 	# @param maxcards [Integer] The maximum number of cards to score (7 is 2-card lookahead, 6 is 1-card)
-	# @return [Float] 
+	# @return [Array] 
 	def hand_potential(pocket, board, maxcards = 6)
 		if ((board.length / 2) == 5)
 			return [0,0]
@@ -314,7 +314,7 @@ class PokerEval
 			results = []
 
 			# simple callback to fetch results for each iteration
-			cb = Proc.new do |i|
+			cb = Proc.new do |i,cards|
 				results.push(i)
 			end
 
