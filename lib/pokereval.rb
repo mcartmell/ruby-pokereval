@@ -385,6 +385,12 @@ class PokerEval
 		end
 	end
 
+	# Deals random cards in the given sizes of sets, up to the requested number of iterations
+	# This can be used for Montecarlo simulations.
+	#
+	# @param set_sizes [Array] The number of cards in each set
+	# @param dead [PokerEvalAPI::CardMask] Cards to exclude from the selection
+	# @param num_iter [Integer] The number of iterations
 	def montecarlo_sets(set_sizes, dead, num_iter)
 		num_iter.times do
 			used = dead.clone
@@ -400,10 +406,16 @@ class PokerEval
 		end
 	end
 
+	# Returns an empty CardMask
+	# @return [PokerEvalAPI::CardMask]
 	def new_cards
 		return PokerEvalAPI::CardMask.new
 	end
 
+	# Returns a CardMask for the given string
+	#
+	# @param str [String] The string representing the cards, eg. AsAc
+	# @return [PokerEvalAPI::CardMask]
 	def get_cards(str)
 		return PokerEvalAPI.TextToPokerEval(str)
 	end
@@ -422,6 +434,9 @@ class PokerEval
 		return Ranks[card[0].to_sym] || card[0].to_i
 	end
 
+	# Returns a short abbreviation of the current hand, eg. AA, AKs or AKo
+	# @param str [String] The string representing the current hand
+	# @return [String] The abbreviation for the given hand
 	def str_to_abbr(str)
 		chars = str.split(//)
 		ranks = [chars[0], chars[2]].sort {|b,a| (Ranks[a.to_sym] || a.to_i) <=> (Ranks[b.to_sym] || b.to_i)}
@@ -434,14 +449,23 @@ class PokerEval
 		return ranks.join('') + suited
 	end
 
+	# Returns the rank of the card as an integer
+	# @param idx [Integer] The card index
+	# @return [Integer] The card rank
 	def card_idx_to_rank(idx)
 		return PokerEvalAPI.wrap_StdDeck_RANK(idx)
 	end
 
+	# Returns the suit of the card as an integer
+	# @param idx [Integer] The card index
+	# @return [Integer] The card suit
 	def card_idx_to_suit(idx)
 		return PokerEvalAPI.wrap_StdDeck_SUIT(idx)
 	end
 
+	# Calculates the 'Sklansky group' of 2 hole cards, where 1 is the best and 8 is the worst.
+	# @param hand_str [String] The hole cards
+	# @return [Integer] The Sklansky group
 	def hand_to_sklansky_group(hand_str)
 		abbr = str_to_abbr(hand_str)
 		HandGroups.each do |group, hands|
