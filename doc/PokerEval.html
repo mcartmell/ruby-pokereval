@@ -1,0 +1,2889 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: PokerEval
+  
+    &mdash; Documentation by YARD 0.8.6.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (P)</a> &raquo;
+    
+    
+    <span class="title">PokerEval</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: PokerEval
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">PokerEval</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/pokereval.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="HandTypes-constant" class="">HandTypes =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NoPair</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>OnePair</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TwoPair</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trips</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Straight</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flush</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>FullHouse</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Quads</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>StraightFlush</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbracket'>]</span></pre></dd>
+      
+        <dt id="Ranks-constant" class="">Ranks =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+	<span class='label'>A:</span> <span class='int'>14</span><span class='comma'>,</span>
+	<span class='label'>K:</span> <span class='int'>13</span><span class='comma'>,</span>
+	<span class='label'>Q:</span> <span class='int'>12</span><span class='comma'>,</span>
+	<span class='label'>J:</span> <span class='int'>11</span><span class='comma'>,</span>
+	<span class='label'>T:</span> <span class='int'>10</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="HandGroups-constant" class="">HandGroups =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+	<span class='int'>1</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>AA</span><span class='words_sep'> </span><span class='tstring_content'>KK</span><span class='words_sep'> </span><span class='tstring_content'>QQ</span><span class='words_sep'> </span><span class='tstring_content'>JJ</span><span class='words_sep'> </span><span class='tstring_content'>AKs</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>2</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>TT</span><span class='words_sep'> </span><span class='tstring_content'>AQs</span><span class='words_sep'> </span><span class='tstring_content'>AJs</span><span class='words_sep'> </span><span class='tstring_content'>KQs</span><span class='words_sep'> </span><span class='tstring_content'>AKo</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>3</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>99</span><span class='words_sep'> </span><span class='tstring_content'>ATs</span><span class='words_sep'> </span><span class='tstring_content'>KJs</span><span class='words_sep'> </span><span class='tstring_content'>QJs</span><span class='words_sep'> </span><span class='tstring_content'>TJs</span><span class='words_sep'> </span><span class='tstring_content'>AQo</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>4</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>88</span><span class='words_sep'> </span><span class='tstring_content'>KTs</span><span class='words_sep'> </span><span class='tstring_content'>QTs</span><span class='words_sep'> </span><span class='tstring_content'>J9s</span><span class='words_sep'> </span><span class='tstring_content'>T9s</span><span class='words_sep'> </span><span class='tstring_content'>98s</span><span class='words_sep'> </span><span class='tstring_content'>AJo</span><span class='words_sep'> </span><span class='tstring_content'>KQo</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>5</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>77</span><span class='words_sep'> </span><span class='tstring_content'>A9s</span><span class='words_sep'> </span><span class='tstring_content'>A8s</span><span class='words_sep'> </span><span class='tstring_content'>A7s</span><span class='words_sep'> </span><span class='tstring_content'>A6s</span><span class='words_sep'> </span><span class='tstring_content'>A5s</span><span class='words_sep'> </span><span class='tstring_content'>A4s</span><span class='words_sep'> </span><span class='tstring_content'>A3s</span><span class='words_sep'> </span><span class='tstring_content'>A2s</span><span class='words_sep'> </span><span class='tstring_content'>Q9s</span><span class='words_sep'> </span><span class='tstring_content'>T8s</span><span class='words_sep'> </span><span class='tstring_content'>97s</span><span class='words_sep'> </span><span class='tstring_content'>87s</span><span class='words_sep'> </span><span class='tstring_content'>76s</span><span class='words_sep'> </span><span class='tstring_content'>KJo</span><span class='words_sep'> </span><span class='tstring_content'>QJo</span><span class='words_sep'> </span><span class='tstring_content'>JTo</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>6</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>66</span><span class='words_sep'> </span><span class='tstring_content'>55</span><span class='words_sep'> </span><span class='tstring_content'>K9s</span><span class='words_sep'> </span><span class='tstring_content'>J8s</span><span class='words_sep'> </span><span class='tstring_content'>86s</span><span class='words_sep'> </span><span class='tstring_content'>75s</span><span class='words_sep'> </span><span class='tstring_content'>54s</span><span class='words_sep'> </span><span class='tstring_content'>ATo</span><span class='words_sep'> </span><span class='tstring_content'>KTo</span><span class='words_sep'> </span><span class='tstring_content'>QTo</span><span class='words_sep'>}</span><span class='comma'>,</span>
+	<span class='int'>7</span> <span class='op'>=&gt;</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>44</span><span class='words_sep'> </span><span class='tstring_content'>33</span><span class='words_sep'> </span><span class='tstring_content'>22</span><span class='words_sep'> </span><span class='tstring_content'>K8s</span><span class='words_sep'> </span><span class='tstring_content'>K7s</span><span class='words_sep'> </span><span class='tstring_content'>K6s</span><span class='words_sep'> </span><span class='tstring_content'>K5s</span><span class='words_sep'> </span><span class='tstring_content'>K4s</span><span class='words_sep'> </span><span class='tstring_content'>K3s</span><span class='words_sep'> </span><span class='tstring_content'>K2s</span><span class='words_sep'> </span><span class='tstring_content'>Q8s</span><span class='words_sep'> </span><span class='tstring_content'>T7s</span><span class='words_sep'> </span><span class='tstring_content'>64s</span><span class='words_sep'> </span><span class='tstring_content'>53s</span><span class='words_sep'> </span><span class='tstring_content'>43s</span><span class='words_sep'> </span><span class='tstring_content'>J9o</span><span class='words_sep'> </span><span class='tstring_content'>T9o</span><span class='words_sep'> </span><span class='tstring_content'>98o</span><span class='words_sep'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add_random_card_not_in-instance_method" title="#add_random_card_not_in (instance method)">- (Object) <strong>add_random_card_not_in</strong>(cards, used) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Adds one random card that&#39;s not in the given set of used cards.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#card_idx_to_rank-instance_method" title="#card_idx_to_rank (instance method)">- (Integer) <strong>card_idx_to_rank</strong>(idx) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the rank of the card as an integer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#card_idx_to_suit-instance_method" title="#card_idx_to_suit (instance method)">- (Integer) <strong>card_idx_to_suit</strong>(idx) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the suit of the card as an integer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#card_rank-instance_method" title="#card_rank (instance method)">- (Object) <strong>card_rank</strong>(card) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#compare_hands-instance_method" title="#compare_hands (instance method)">- (Integer) <strong>compare_hands</strong>(p1, p2, board) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Compares two hands by evaluating them against the current board.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#effective_hand_strength-instance_method" title="#effective_hand_strength (instance method)">- (Object) <strong>effective_hand_strength</strong>(pocket, board, hs = nil, use_npot = false) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the EHS of the current hand.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#eval_outs-instance_method" title="#eval_outs (instance method)">- (Object) <strong>eval_outs</strong>(pocket, board) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_cards-instance_method" title="#get_cards (instance method)">- (PokerEvalAPI::CardMask) <strong>get_cards</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a CardMask for the given string.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_equity-instance_method" title="#get_equity (instance method)">- (Float) <strong>get_equity</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Does a montecarlo simulation to estimate the strength of a given hand.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_random_hand_not_in_str-instance_method" title="#get_random_hand_not_in_str (instance method)">- (Object) <strong>get_random_hand_not_in_str</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a random pair of cards that are not contained in the given string
+of cards.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_weight_from_table-instance_method" title="#get_weight_from_table (instance method)">- (Object) <strong>get_weight_from_table</strong>(cards, weight_table = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hand_potential-instance_method" title="#hand_potential (instance method)">- (Array) <strong>hand_potential</strong>(pocket, board, maxcards = 6) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the hand potential (positive and negative) of the current hand By
+default will only do a one-card lookahead.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hand_strength-instance_method" title="#hand_strength (instance method)">- (Object) <strong>hand_strength</strong>(pocket, board, opponents = 1, weight_table = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the hand strength using Ruby.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hand_to_sklansky_group-instance_method" title="#hand_to_sklansky_group (instance method)">- (Integer) <strong>hand_to_sklansky_group</strong>(hand_str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the &#39;Sklansky group&#39; of 2 hole cards, where 1 is the
+best and 8 is the worst.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#hs-instance_method" title="#hs (instance method)">- (Float) <strong>hs</strong>(*a) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the hand strength using the poker-eval library.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#mask_to_str-instance_method" title="#mask_to_str (instance method)">- (Object) <strong>mask_to_str</strong>(cards_n) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#montecarlo-instance_method" title="#montecarlo (instance method)">- (Object) <strong>montecarlo</strong>(dead, num_cards, num_iter) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Performs a montecarlo simulation, yielding the generated cards.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#montecarlo_sets-instance_method" title="#montecarlo_sets (instance method)">- (Object) <strong>montecarlo_sets</strong>(set_sizes, dead, num_iter) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Deals random cards in the given sizes of sets, up to the requested number
+of iterations This can be used for Montecarlo simulations.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#new_cards-instance_method" title="#new_cards (instance method)">- (PokerEvalAPI::CardMask) <strong>new_cards</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns an empty CardMask.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#random_card-instance_method" title="#random_card (instance method)">- (Object) <strong>random_card</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a random card (as a PokerEvalAPI::CardMask).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rank_to_num-instance_method" title="#rank_to_num (instance method)">- (Object) <strong>rank_to_num</strong>(rank) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#score_hand-instance_method" title="#score_hand (instance method)">- (Integer) <strong>score_hand</strong>(hand, board) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Scores a single hand, passed by string.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_to_abbr-instance_method" title="#str_to_abbr (instance method)">- (String) <strong>str_to_abbr</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a short abbreviation of the current hand, eg.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_to_hs-instance_method" title="#str_to_hs (instance method)">- (Float) <strong>str_to_hs</strong>(pocket, board) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the hand strength using the poker-eval library.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#type_hand-instance_method" title="#type_hand (instance method)">- (String) <strong>type_hand</strong>(hand, board) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Classifies the hand (one pair, two pair, flush etc.).</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="add_random_card_not_in-instance_method">
+  
+    - (<tt>Object</tt>) <strong>add_random_card_not_in</strong>(cards, used) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Adds one random card that&#39;s not in the given set of used cards</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 377</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_random_card_not_in'>add_random_card_not_in</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_used'>used</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+		<span class='id identifier rubyid_card'>card</span> <span class='op'>=</span> <span class='id identifier rubyid_random_card'>random_card</span>
+		<span class='kw'>unless</span> <span class='id identifier rubyid_used'>used</span><span class='period'>.</span><span class='id identifier rubyid_any_set'>any_set</span><span class='lparen'>(</span><span class='id identifier rubyid_card'>card</span><span class='rparen'>)</span>
+			<span class='id identifier rubyid_cards'>cards</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_card'>card</span>
+			<span class='id identifier rubyid_used'>used</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_card'>card</span>
+			<span class='kw'>break</span>
+		<span class='kw'>end</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="card_idx_to_rank-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>card_idx_to_rank</strong>(idx) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the rank of the card as an integer</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>idx</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The card index</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The card rank</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+455
+456
+457</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 455</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_card_idx_to_rank'>card_idx_to_rank</span><span class='lparen'>(</span><span class='id identifier rubyid_idx'>idx</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_wrap_StdDeck_RANK'>wrap_StdDeck_RANK</span><span class='lparen'>(</span><span class='id identifier rubyid_idx'>idx</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="card_idx_to_suit-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>card_idx_to_suit</strong>(idx) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the suit of the card as an integer</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>idx</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The card index</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The card suit</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+462
+463
+464</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 462</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_card_idx_to_suit'>card_idx_to_suit</span><span class='lparen'>(</span><span class='id identifier rubyid_idx'>idx</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_wrap_StdDeck_SUIT'>wrap_StdDeck_SUIT</span><span class='lparen'>(</span><span class='id identifier rubyid_idx'>idx</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="card_rank-instance_method">
+  
+    - (<tt>Object</tt>) <strong>card_rank</strong>(card) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+433
+434
+435</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 433</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_card_rank'>card_rank</span><span class='lparen'>(</span><span class='id identifier rubyid_card'>card</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>Ranks</span><span class='lbracket'>[</span><span class='id identifier rubyid_card'>card</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_card'>card</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="compare_hands-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>compare_hands</strong>(p1, p2, board) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Compares two hands by evaluating them against the current board</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>p1</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The first player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>p2</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The second player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>1 if p1 wins, -1 if p2 wins, 0 of they are equal</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_compare_hands'>compare_hands</span><span class='lparen'>(</span><span class='id identifier rubyid_p1'>p1</span><span class='comma'>,</span><span class='id identifier rubyid_p2'>p2</span><span class='comma'>,</span><span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_p1score'>p1score</span> <span class='op'>=</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>Eval_Str_N</span><span class='lparen'>(</span><span class='id identifier rubyid_p1'>p1</span> <span class='op'>+</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_p2score'>p2score</span> <span class='op'>=</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>Eval_Str_N</span><span class='lparen'>(</span><span class='id identifier rubyid_p2'>p2</span> <span class='op'>+</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='op'>-</span><span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_p1score'>p1score</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_p2score'>p2score</span>
+	<span class='kw'>return</span> <span class='int'>0</span> <span class='kw'>if</span> <span class='id identifier rubyid_p1score'>p1score</span> <span class='op'>==</span> <span class='id identifier rubyid_p2score'>p2score</span>
+	<span class='kw'>return</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_p1score'>p1score</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_p2score'>p2score</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="effective_hand_strength-instance_method">
+  
+    - (<tt>Object</tt>) <strong>effective_hand_strength</strong>(pocket, board, hs = nil, use_npot = false) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the EHS of the current hand</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>pocket</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hs</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>(optional) The hand strength to use in the calculation. If not specified,
+will be calculated</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>use_npot</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>(optional, default false) Whether or not to return the negative potential</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 173</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_effective_hand_strength'>effective_hand_strength</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_hs'>hs</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_use_npot'>use_npot</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_hs'>hs</span> <span class='op'>||=</span> <span class='id identifier rubyid_hand_strength'>hand_strength</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='int'>0</span> <span class='kw'>if</span> <span class='id identifier rubyid_pocket'>pocket</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>||</span> <span class='id identifier rubyid_board'>board</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+	<span class='lparen'>(</span><span class='id identifier rubyid_ppot'>ppot</span><span class='comma'>,</span> <span class='id identifier rubyid_npot'>npot</span><span class='rparen'>)</span> <span class='op'>=</span> <span class='id identifier rubyid_hand_potential'>hand_potential</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_npot'>npot</span> <span class='op'>=</span> <span class='int'>0</span> <span class='kw'>unless</span> <span class='id identifier rubyid_use_npot'>use_npot</span>
+	<span class='id identifier rubyid_ehs'>ehs</span> <span class='op'>=</span> <span class='id identifier rubyid_hs'>hs</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='int'>1</span> <span class='op'>-</span> <span class='id identifier rubyid_npot'>npot</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='int'>1</span> <span class='op'>-</span> <span class='id identifier rubyid_hs'>hs</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='id identifier rubyid_ppot'>ppot</span>
+	<span class='kw'>return</span> <span class='lbrace'>{</span>
+		<span class='label'>ehs:</span> <span class='id identifier rubyid_ehs'>ehs</span><span class='comma'>,</span>
+		<span class='label'>ppot:</span> <span class='id identifier rubyid_ppot'>ppot</span><span class='comma'>,</span>
+		<span class='label'>npot:</span> <span class='id identifier rubyid_npot'>npot</span>
+	<span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="eval_outs-instance_method">
+  
+    - (<tt>Object</tt>) <strong>eval_outs</strong>(pocket, board) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 297</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_eval_outs'>eval_outs</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_psize'>psize</span> <span class='op'>=</span> <span class='id identifier rubyid_pocket'>pocket</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>/</span> <span class='int'>2</span>
+	<span class='id identifier rubyid_bsize'>bsize</span> <span class='op'>=</span> <span class='id identifier rubyid_board'>board</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>/</span> <span class='int'>2</span>
+
+	<span class='id identifier rubyid_stages'>stages</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+		<span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>3</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flop</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+		<span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>4</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Turn</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+		<span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>5</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>River</span><span class='tstring_end'>&quot;</span></span>
+	<span class='rbrace'>}</span>
+
+	<span class='id identifier rubyid_r_stages'>r_stages</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+	<span class='comment'># 3..5 = for flop, turn, river
+</span>	<span class='lparen'>(</span><span class='int'>3</span><span class='op'>..</span><span class='int'>5</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tot'>tot</span><span class='op'>|</span>
+		<span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_tot'>tot</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_bsize'>bsize</span>
+		<span class='id identifier rubyid_stage'>stage</span> <span class='op'>=</span> <span class='id identifier rubyid_stages'>stages</span><span class='lbracket'>[</span><span class='id identifier rubyid_tot'>tot</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rbracket'>]</span>
+
+		<span class='id identifier rubyid_results'>results</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+		<span class='comment'># simple callback to fetch results for each iteration
+</span>		<span class='id identifier rubyid_cb'>cb</span> <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='comma'>,</span><span class='id identifier rubyid_cards'>cards</span><span class='op'>|</span>
+			<span class='id identifier rubyid_results'>results</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
+		<span class='kw'>end</span>
+
+		<span class='comment'># run the eval
+</span>		<span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_evalOuts'>evalOuts</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_psize'>psize</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_bsize'>bsize</span><span class='comma'>,</span> <span class='id identifier rubyid_tot'>tot</span><span class='comma'>,</span> <span class='id identifier rubyid_cb'>cb</span><span class='rparen'>)</span>
+
+		<span class='id identifier rubyid_stats'>stats</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+		<span class='comment'># collect stats for each type of hand
+</span>		<span class='id identifier rubyid_results'>results</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span>
+			<span class='id identifier rubyid_stats'>stats</span><span class='lbracket'>[</span><span class='id identifier rubyid_e'>e</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_stats'>stats</span><span class='lbracket'>[</span><span class='id identifier rubyid_e'>e</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span>
+		<span class='kw'>end</span>
+
+		<span class='comment'># get sum
+</span>		<span class='id identifier rubyid_total'>total</span> <span class='op'>=</span> <span class='id identifier rubyid_stats'>stats</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_n'>n</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+=</span> <span class='lparen'>(</span><span class='id identifier rubyid_n'>n</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+
+		<span class='id identifier rubyid_stats_name'>stats_name</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+		<span class='comment'># get percentages
+</span>		<span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>8</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+			<span class='id identifier rubyid_pct'>pct</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_stats'>stats</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='id identifier rubyid_total'>total</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='int'>100</span><span class='rparen'>)</span>
+			<span class='id identifier rubyid_stats_name'>stats_name</span><span class='lbracket'>[</span><span class='const'>HandTypes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_pct'>pct</span>
+		<span class='kw'>end</span>
+		
+		<span class='comment'># set percentages for this stage
+</span>		<span class='id identifier rubyid_r_stages'>r_stages</span><span class='lbracket'>[</span><span class='id identifier rubyid_stage'>stage</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_stats_name'>stats_name</span>
+	<span class='kw'>end</span>
+
+	<span class='comment'># return percentages
+</span>	<span class='kw'>return</span> <span class='id identifier rubyid_r_stages'>r_stages</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_cards-instance_method">
+  
+    - (<tt><span class='object_link'><a href="PokerEvalAPI/CardMask.html" title="PokerEvalAPI::CardMask (class)">PokerEvalAPI::CardMask</a></span></tt>) <strong>get_cards</strong>(str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a CardMask for the given string</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The string representing the cards, eg. AsAc</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="PokerEvalAPI/CardMask.html" title="PokerEvalAPI::CardMask (class)">PokerEvalAPI::CardMask</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+419
+420
+421</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 419</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>TextToPokerEval</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_equity-instance_method">
+  
+    - (<tt>Float</tt>) <strong>get_equity</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Does a montecarlo simulation to estimate the strength of a given hand</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a customizable set of options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    <p class="tag_title">Options Hash (<tt>options</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:pocket</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The player&#39;s hole cards</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:board</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The board cards</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:iterations</span>
+          <span class="type">(<tt>Integer</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The number of montecarlo simulations</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:num_opponents</span>
+          <span class="type">(<tt>Integer</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>The number of opponent hands to simulate</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The percentage of times the player&#39;s hand wins</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 239</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_equity'>get_equity</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_defaults'>defaults</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+		<span class='label'>pocket:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+		<span class='label'>board:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+		<span class='label'>iterations:</span> <span class='int'>500</span><span class='comma'>,</span>
+		<span class='label'>num_opponents:</span> <span class='int'>1</span>
+	<span class='rbrace'>}</span>
+
+	<span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='id identifier rubyid_defaults'>defaults</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+
+	<span class='id identifier rubyid_pocket'>pocket</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:pocket</span><span class='rbracket'>]</span>
+	<span class='id identifier rubyid_board'>board</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:board</span><span class='rbracket'>]</span>
+	<span class='id identifier rubyid_num_opponents'>num_opponents</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:num_opponents</span><span class='rbracket'>]</span>
+	<span class='id identifier rubyid_num_iter'>num_iter</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:iterations</span><span class='rbracket'>]</span>
+
+	<span class='id identifier rubyid_pcards'>pcards</span> <span class='op'>=</span> <span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_bcards'>bcards</span> <span class='op'>=</span> <span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_dead'>dead</span> <span class='op'>=</span> <span class='id identifier rubyid_new_cards'>new_cards</span>
+	<span class='id identifier rubyid_dead'>dead</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_pcards'>pcards</span>
+	<span class='id identifier rubyid_dead'>dead</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_bcards'>bcards</span>
+	<span class='id identifier rubyid_player_sizes'>player_sizes</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='id identifier rubyid_num_opponents'>num_opponents</span>
+	<span class='id identifier rubyid_player_sizes'>player_sizes</span> <span class='op'>&lt;&lt;</span> <span class='int'>5</span> <span class='op'>-</span> <span class='id identifier rubyid_bcards'>bcards</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
+
+	<span class='id identifier rubyid_ahead'>ahead</span> <span class='op'>=</span> <span class='id identifier rubyid_tied'>tied</span> <span class='op'>=</span> <span class='id identifier rubyid_behind'>behind</span> <span class='op'>=</span> <span class='int'>0</span>
+
+	<span class='id identifier rubyid_montecarlo_sets'>montecarlo_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_player_sizes'>player_sizes</span><span class='comma'>,</span> <span class='id identifier rubyid_dead'>dead</span><span class='comma'>,</span> <span class='id identifier rubyid_num_iter'>num_iter</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_sets'>sets</span><span class='op'>|</span>
+		<span class='id identifier rubyid_board'>board</span> <span class='op'>=</span> <span class='id identifier rubyid_sets'>sets</span><span class='period'>.</span><span class='id identifier rubyid_pop'>pop</span>
+		<span class='id identifier rubyid_ours'>ours</span> <span class='op'>=</span> <span class='id identifier rubyid_dead'>dead</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
+		<span class='id identifier rubyid_ours'>ours</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_board'>board</span>
+		<span class='id identifier rubyid_ourscore'>ourscore</span> <span class='op'>=</span> <span class='id identifier rubyid_ours'>ours</span><span class='period'>.</span><span class='id identifier rubyid_eval'>eval</span><span class='lparen'>(</span><span class='int'>7</span><span class='rparen'>)</span>
+		
+		<span class='id identifier rubyid_oppscores'>oppscores</span> <span class='op'>=</span> <span class='id identifier rubyid_sets'>sets</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_cards'>cards</span><span class='op'>|</span> <span class='id identifier rubyid_cards'>cards</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_board'>board</span><span class='semicolon'>;</span> <span class='id identifier rubyid_cards'>cards</span><span class='period'>.</span><span class='id identifier rubyid_eval'>eval</span><span class='lparen'>(</span><span class='int'>7</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+		<span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='id identifier rubyid_oppscores'>oppscores</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
+		<span class='id identifier rubyid_ahead'>ahead</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_ourscore'>ourscore</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_score'>score</span>
+		<span class='id identifier rubyid_tied'>tied</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_ourscore'>ourscore</span> <span class='op'>==</span> <span class='id identifier rubyid_score'>score</span>
+		<span class='id identifier rubyid_behind'>behind</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_ourscore'>ourscore</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_score'>score</span>
+	<span class='kw'>end</span>
+
+	<span class='id identifier rubyid_equity'>equity</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_ahead'>ahead</span><span class='op'>+</span><span class='id identifier rubyid_tied'>tied</span><span class='op'>/</span><span class='float'>2.0</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_ahead'>ahead</span><span class='op'>+</span><span class='id identifier rubyid_tied'>tied</span><span class='op'>+</span><span class='id identifier rubyid_behind'>behind</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_equity'>equity</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_random_hand_not_in_str-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get_random_hand_not_in_str</strong>(str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a random pair of cards that are not contained in the given string
+of cards</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+368
+369
+370
+371
+372
+373
+374</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 368</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_random_hand_not_in_str'>get_random_hand_not_in_str</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_used'>used</span> <span class='op'>=</span> <span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_cards'>cards</span> <span class='op'>=</span> <span class='id identifier rubyid_new_cards'>new_cards</span>
+	<span class='id identifier rubyid_add_random_card_not_in'>add_random_card_not_in</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_used'>used</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_add_random_card_not_in'>add_random_card_not_in</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_used'>used</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_cards'>cards</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_weight_from_table-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get_weight_from_table</strong>(cards, weight_table = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+186
+187
+188</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 186</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_get_weight_from_table'>get_weight_from_table</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_weight_table'>weight_table</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_weight_table'>weight_table</span><span class='lbracket'>[</span><span class='id identifier rubyid_cards'>cards</span><span class='period'>.</span><span class='id identifier rubyid_cards_n'>cards_n</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='int'>1</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hand_potential-instance_method">
+  
+    - (<tt>Array</tt>) <strong>hand_potential</strong>(pocket, board, maxcards = 6) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the hand potential (positive and negative) of the current hand By
+default will only do a one-card lookahead</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>pocket</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s hole cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>maxcards</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>6</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The maximum number of cards to score (7 is 2-card lookahead, 6 is 1-card)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+288
+289
+290
+291
+292
+293
+294
+295</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 288</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_hand_potential'>hand_potential</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_maxcards'>maxcards</span> <span class='op'>=</span> <span class='int'>6</span><span class='rparen'>)</span>
+	<span class='kw'>if</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_board'>board</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>/</span> <span class='int'>2</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='int'>5</span><span class='rparen'>)</span>
+		<span class='kw'>return</span> <span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='int'>0</span><span class='rbracket'>]</span>
+	<span class='kw'>end</span>
+	<span class='id identifier rubyid_ppot'>ppot</span> <span class='op'>=</span> <span class='const'>FFI</span><span class='op'>::</span><span class='const'>MemoryPointer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:pointer</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+	<span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_handPotential'>handPotential</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_ppot'>ppot</span><span class='comma'>,</span> <span class='id identifier rubyid_maxcards'>maxcards</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_ppot'>ppot</span><span class='period'>.</span><span class='id identifier rubyid_read_pointer'>read_pointer</span><span class='period'>.</span><span class='id identifier rubyid_read_string'>read_string</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>|</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span> <span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hand_strength-instance_method">
+  
+    - (<tt>Object</tt>) <strong>hand_strength</strong>(pocket, board, opponents = 1, weight_table = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the hand strength using Ruby</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>pocket</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>opponents</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>(default: 1) The number of opponents</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>weight_table</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>(default: {}) A weight table to adjust the score given to each pair of
+opponent&#39;s cards.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 212</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_hand_strength'>hand_strength</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_opponents'>opponents</span> <span class='op'>=</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_weight_table'>weight_table</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_ahead'>ahead</span> <span class='op'>=</span> <span class='id identifier rubyid_tied'>tied</span> <span class='op'>=</span> <span class='id identifier rubyid_behind'>behind</span> <span class='op'>=</span> <span class='int'>0</span>
+	<span class='id identifier rubyid_score'>score</span> <span class='op'>=</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>Eval_Str_N</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span> <span class='op'>+</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_weighted_proc'>weighted_proc</span> <span class='op'>=</span> <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='id identifier rubyid_cards'>cards</span><span class='op'>|</span>
+		<span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='id identifier rubyid_get_weight_from_table'>get_weight_from_table</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_weight_table'>weight_table</span><span class='rparen'>)</span>
+		<span class='id identifier rubyid_ahead'>ahead</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_i'>i</span>
+		<span class='id identifier rubyid_tied'>tied</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>==</span> <span class='id identifier rubyid_i'>i</span>
+		<span class='id identifier rubyid_behind'>behind</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_i'>i</span>
+	<span class='kw'>end</span>
+	<span class='id identifier rubyid_normal_proc'>normal_proc</span> <span class='op'>=</span>  <span class='const'>Proc</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='comma'>,</span> <span class='id identifier rubyid_cards'>cards</span><span class='op'>|</span>
+		<span class='id identifier rubyid_ahead'>ahead</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_i'>i</span>
+		<span class='id identifier rubyid_tied'>tied</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>==</span> <span class='id identifier rubyid_i'>i</span>
+		<span class='id identifier rubyid_behind'>behind</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_score'>score</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_i'>i</span>
+	<span class='kw'>end</span>
+	<span class='id identifier rubyid_cb'>cb</span> <span class='op'>=</span> <span class='id identifier rubyid_weight_table'>weight_table</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>?</span> <span class='id identifier rubyid_normal_proc'>normal_proc</span> <span class='op'>:</span> <span class='id identifier rubyid_weighted_proc'>weighted_proc</span>
+	<span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_scoreTwoCards'>scoreTwoCards</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='comma'>,</span> <span class='id identifier rubyid_cb'>cb</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_handstrength'>handstrength</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_ahead'>ahead</span><span class='op'>+</span><span class='id identifier rubyid_tied'>tied</span><span class='op'>/</span><span class='float'>2.0</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='lparen'>(</span><span class='id identifier rubyid_ahead'>ahead</span><span class='op'>+</span><span class='id identifier rubyid_tied'>tied</span><span class='op'>+</span><span class='id identifier rubyid_behind'>behind</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_handstrength'>handstrength</span> <span class='op'>**</span> <span class='id identifier rubyid_opponents'>opponents</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hand_to_sklansky_group-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>hand_to_sklansky_group</strong>(hand_str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the &#39;Sklansky group&#39; of 2 hole cards, where 1 is the
+best and 8 is the worst.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>hand_str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The hole cards</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The Sklansky group</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+469
+470
+471
+472
+473
+474
+475
+476
+477</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 469</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_hand_to_sklansky_group'>hand_to_sklansky_group</span><span class='lparen'>(</span><span class='id identifier rubyid_hand_str'>hand_str</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_abbr'>abbr</span> <span class='op'>=</span> <span class='id identifier rubyid_str_to_abbr'>str_to_abbr</span><span class='lparen'>(</span><span class='id identifier rubyid_hand_str'>hand_str</span><span class='rparen'>)</span>
+	<span class='const'>HandGroups</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_group'>group</span><span class='comma'>,</span> <span class='id identifier rubyid_hands'>hands</span><span class='op'>|</span>
+		<span class='kw'>if</span> <span class='id identifier rubyid_hands'>hands</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_abbr'>abbr</span><span class='rparen'>)</span>
+			<span class='kw'>return</span> <span class='id identifier rubyid_group'>group</span>
+		<span class='kw'>end</span>
+	<span class='kw'>end</span>
+	<span class='kw'>return</span> <span class='int'>8</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="hs-instance_method">
+  
+    - (<tt>Float</tt>) <strong>hs</strong>(*a) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the hand strength using the poker-eval library</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+193
+194
+195</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 193</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_hs'>hs</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_handStrength'>handStrength</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="mask_to_str-instance_method">
+  
+    - (<tt>Object</tt>) <strong>mask_to_str</strong>(cards_n) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+423
+424
+425
+426
+427</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 423</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_mask_to_str'>mask_to_str</span><span class='lparen'>(</span><span class='id identifier rubyid_cards_n'>cards_n</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_cm'>cm</span> <span class='op'>=</span> <span class='const'>PokerEvalAPI</span><span class='op'>::</span><span class='const'>CardMask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+	<span class='id identifier rubyid_cm'>cm</span><span class='lbracket'>[</span><span class='symbol'>:cards_n</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_cards_n'>cards_n</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_cm'>cm</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="montecarlo-instance_method">
+  
+    - (<tt>Object</tt>) <strong>montecarlo</strong>(dead, num_cards, num_iter) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Performs a montecarlo simulation, yielding the generated cards</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 356</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_montecarlo'>montecarlo</span><span class='lparen'>(</span><span class='id identifier rubyid_dead'>dead</span><span class='comma'>,</span> <span class='id identifier rubyid_num_cards'>num_cards</span><span class='comma'>,</span> <span class='id identifier rubyid_num_iter'>num_iter</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_num_iter'>num_iter</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span>
+		<span class='id identifier rubyid_cards'>cards</span> <span class='op'>=</span> <span class='id identifier rubyid_new_cards'>new_cards</span>
+		<span class='id identifier rubyid_used'>used</span> <span class='op'>=</span> <span class='id identifier rubyid_dead'>dead</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
+		<span class='id identifier rubyid_num_cards'>num_cards</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span>
+			<span class='id identifier rubyid_add_random_card_not_in'>add_random_card_not_in</span><span class='lparen'>(</span><span class='id identifier rubyid_cards'>cards</span><span class='comma'>,</span> <span class='id identifier rubyid_used'>used</span><span class='rparen'>)</span>
+		<span class='kw'>end</span>
+		<span class='kw'>yield</span> <span class='id identifier rubyid_cards'>cards</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="montecarlo_sets-instance_method">
+  
+    - (<tt>Object</tt>) <strong>montecarlo_sets</strong>(set_sizes, dead, num_iter) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Deals random cards in the given sizes of sets, up to the requested number
+of iterations This can be used for Montecarlo simulations.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>set_sizes</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The number of cards in each set</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>dead</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="PokerEvalAPI/CardMask.html" title="PokerEvalAPI::CardMask (class)">PokerEvalAPI::CardMask</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Cards to exclude from the selection</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>num_iter</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The number of iterations</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 394</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_montecarlo_sets'>montecarlo_sets</span><span class='lparen'>(</span><span class='id identifier rubyid_set_sizes'>set_sizes</span><span class='comma'>,</span> <span class='id identifier rubyid_dead'>dead</span><span class='comma'>,</span> <span class='id identifier rubyid_num_iter'>num_iter</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_num_iter'>num_iter</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span>
+		<span class='id identifier rubyid_used'>used</span> <span class='op'>=</span> <span class='id identifier rubyid_dead'>dead</span><span class='period'>.</span><span class='id identifier rubyid_clone'>clone</span>
+		<span class='id identifier rubyid_sets'>sets</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+		<span class='id identifier rubyid_set_sizes'>set_sizes</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_size'>size</span><span class='op'>|</span>
+			<span class='id identifier rubyid_set_cards'>set_cards</span> <span class='op'>=</span> <span class='id identifier rubyid_new_cards'>new_cards</span>
+			<span class='id identifier rubyid_size'>size</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span>
+				<span class='id identifier rubyid_add_random_card_not_in'>add_random_card_not_in</span><span class='lparen'>(</span><span class='id identifier rubyid_set_cards'>set_cards</span><span class='comma'>,</span> <span class='id identifier rubyid_used'>used</span><span class='rparen'>)</span>
+			<span class='kw'>end</span>
+			<span class='id identifier rubyid_sets'>sets</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_set_cards'>set_cards</span>
+		<span class='kw'>end</span>
+		<span class='kw'>yield</span> <span class='id identifier rubyid_sets'>sets</span>
+	<span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="new_cards-instance_method">
+  
+    - (<tt><span class='object_link'><a href="PokerEvalAPI/CardMask.html" title="PokerEvalAPI::CardMask (class)">PokerEvalAPI::CardMask</a></span></tt>) <strong>new_cards</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns an empty CardMask</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="PokerEvalAPI/CardMask.html" title="PokerEvalAPI::CardMask (class)">PokerEvalAPI::CardMask</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+411
+412
+413</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 411</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_new_cards'>new_cards</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='op'>::</span><span class='const'>CardMask</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="random_card-instance_method">
+  
+    - (<tt>Object</tt>) <strong>random_card</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a random card (as a PokerEvalAPI::CardMask)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+351
+352
+353</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 351</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_random_card'>random_card</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='id identifier rubyid_wrap_StdDeck_MASK'>wrap_StdDeck_MASK</span><span class='lparen'>(</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='int'>52</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="rank_to_num-instance_method">
+  
+    - (<tt>Object</tt>) <strong>rank_to_num</strong>(rank) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+429
+430
+431</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 429</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_rank_to_num'>rank_to_num</span><span class='lparen'>(</span><span class='id identifier rubyid_rank'>rank</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>Ranks</span><span class='lbracket'>[</span><span class='id identifier rubyid_rank'>rank</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_rank'>rank</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="score_hand-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>score_hand</strong>(hand, board) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Scores a single hand, passed by string</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>hand</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The score of the hand</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+139
+140
+141</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 139</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_score_hand'>score_hand</span><span class='lparen'>(</span><span class='id identifier rubyid_hand'>hand</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>Eval_Str_N</span><span class='lparen'>(</span><span class='id identifier rubyid_hand'>hand</span> <span class='op'>+</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_to_abbr-instance_method">
+  
+    - (<tt>String</tt>) <strong>str_to_abbr</strong>(str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a short abbreviation of the current hand, eg. AA, AKs or AKo</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The string representing the current hand</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The abbreviation for the given hand</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 440</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_to_abbr'>str_to_abbr</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_chars'>chars</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_ranks'>ranks</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_b'>b</span><span class='comma'>,</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='lparen'>(</span><span class='const'>Ranks</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span> <span class='op'>&lt;=&gt;</span> <span class='lparen'>(</span><span class='const'>Ranks</span><span class='lbracket'>[</span><span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+	<span class='id identifier rubyid_suited'>suited</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+	<span class='kw'>if</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>3</span><span class='rbracket'>]</span> 
+		<span class='id identifier rubyid_suited'>suited</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span>
+	<span class='kw'>elsif</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span>
+		<span class='id identifier rubyid_suited'>suited</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>o</span><span class='tstring_end'>&#39;</span></span>
+	<span class='kw'>end</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_ranks'>ranks</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_suited'>suited</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_to_hs-instance_method">
+  
+    - (<tt>Float</tt>) <strong>str_to_hs</strong>(pocket, board) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the hand strength using the poker-eval library</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>pocket</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s board cards</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Float</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+202
+203
+204</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 202</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_to_hs'>str_to_hs</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='id identifier rubyid_hs'>hs</span><span class='lparen'>(</span><span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_pocket'>pocket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_get_cards'>get_cards</span><span class='lparen'>(</span><span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="type_hand-instance_method">
+  
+    - (<tt>String</tt>) <strong>type_hand</strong>(hand, board) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Classifies the hand (one pair, two pair, flush etc.)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>hand</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The player&#39;s pocket cards</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>board</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The board cards</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A string representing the hand type</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+148
+149
+150
+151</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/pokereval.rb', line 148</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_type_hand'>type_hand</span><span class='lparen'>(</span><span class='id identifier rubyid_hand'>hand</span><span class='comma'>,</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='const'>PokerEvalAPI</span><span class='period'>.</span><span class='const'>Eval_Str_Type</span><span class='lparen'>(</span><span class='id identifier rubyid_hand'>hand</span> <span class='op'>+</span> <span class='id identifier rubyid_board'>board</span><span class='rparen'>)</span>
+	<span class='kw'>return</span> <span class='const'>HandTypes</span><span class='lbracket'>[</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Jul  1 23:05:02 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.6.2 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.6.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'>
+<h1 id="label-ruby-pokereval">ruby-pokereval</h1>
+
+<p>An interface to the <a
+href="http://pokersource.sourceforge.net/">poker-eval</a> C library, and
+various other functions written in Ruby.</p>
+
+<h1 id="label-Example+usage">Example usage</h1>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;pokereval&#39;</span>
+<span class="ruby-identifier">pe</span> = <span class="ruby-constant">PokerEval</span>.<span class="ruby-identifier">new</span>
+
+<span class="ruby-comment"># Get the type of a given hand</span>
+<span class="ruby-identifier">hand_type</span> = <span class="ruby-identifier">pe</span>.<span class="ruby-identifier">type_hand</span>(<span class="ruby-string">&quot;2h3h&quot;</span>, <span class="ruby-string">&quot;4h5h6h&quot;</span>); <span class="ruby-comment">## StraightFlush</span>
+
+<span class="ruby-comment"># Get the strength of a hand</span>
+<span class="ruby-identifier">hs</span> = <span class="ruby-identifier">pe</span>.<span class="ruby-identifier">str_to_hs</span>(<span class="ruby-string">&quot;AsAd&quot;</span>, <span class="ruby-string">&quot;5s7d8c&quot;</span>)
+
+<span class="ruby-comment"># Get the potential of a hand</span>
+(<span class="ruby-identifier">ppot</span>, <span class="ruby-identifier">npot</span>) = <span class="ruby-identifier">pe</span>.<span class="ruby-identifier">hand_potential</span>(<span class="ruby-string">&quot;2h3h&quot;</span>, <span class="ruby-string">&quot;4h5h9c&quot;</span>)
+
+<span class="ruby-comment"># Get the effective hand strength</span>
+<span class="ruby-identifier">ehs</span> = <span class="ruby-identifier">pe</span>.<span class="ruby-identifier">effective_hand_strength</span>(<span class="ruby-string">&quot;2h3h&quot;</span>, <span class="ruby-string">&quot;4h5h9c&quot;</span>)
+
+<span class="ruby-comment"># Return the probability of hitting each type of hand on later stages</span>
+<span class="ruby-identifier">outs</span> = <span class="ruby-identifier">pe</span>.<span class="ruby-identifier">eval_outs</span>(<span class="ruby-string">&quot;7s7c&quot;</span>, <span class="ruby-string">&quot;8h9dJs&quot;</span>)
+</pre>
+
+<h1 id="label-See+also">See also</h1>
+<ul><li>
+<p><a
+href="http://www.codingthewheel.com/archives/a-pokersource-poker-eval-primer/">A
+Pokersource Poker-Eval Primter</a></p>
+</li><li>
+<p><a href="http://poker.cs.ualberta.ca/">Computer Poker Research Group @
+University of Alberta</a></p>
+</li></ul>
+</div></div>
+
+    <div id="footer">
+  Generated on Mon Jul  1 23:04:59 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.6.2 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>
