@@ -25,7 +25,8 @@ outs = pe.eval_outs("7s7c", "8h9dJs")
 ```
 
 ## Wrappers for the original C functions
-``ruby
+
+```ruby
 hand = "9s9d9h4d4c"
 mask = PokerEvalAPI.TextToPokerEval(hand)
 
