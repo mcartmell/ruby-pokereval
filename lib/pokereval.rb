@@ -43,6 +43,11 @@ module PokerEvalAPI
 			return PokerEvalAPI.wrap_StdDeck_maskString(self).gsub(/\s+/, '')
 		end
 
+		def type
+			type = PokerEvalAPI.StdDeck_StdRules_EVAL_TYPE(self, count)
+			return PokerEval::HandTypes[type]
+		end
+
 		# Returns the number of cards in this set
 		def count
 			return PokerEvalAPI.wrap_StdDeck_numCards(self)
@@ -80,7 +85,7 @@ module PokerEvalAPI
 
 	callback :completion_function, [:int, CardMask.by_value], :void
 	attach_function :TextToPokerEval, [:string], CardMask.by_value
-	attach_function :StdDeck_StdRules_EVAL_TYPE, [:uint64, :int], :int
+	attach_function :StdDeck_StdRules_EVAL_TYPE, [CardMask.by_value, :int], :int
 	attach_function :StdDeck_StdRules_EVAL_N, [CardMask.by_value, :int], :int
 	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
 	attach_function :handPotential, [:string, :string, :pointer, :int], :int
@@ -89,7 +94,6 @@ module PokerEvalAPI
 	attach_function :Eval_Str_N, [:string], :int
 	attach_function :Eval_Str_Type, [:string], :int
 	attach_function :TextToPtr, [:string], :pointer
-	attach_function :Eval_Ptr, [:pointer, :int], :int
 	attach_function :wrap_StdDeck_MAKE_CARD, [:int, :int], :int
 	attach_function :wrap_StdDeck_MASK, [:int], CardMask.by_value
 	attach_function :wrap_StdDeck_maskString, [CardMask.by_value], :string
@@ -294,6 +298,11 @@ class PokerEval
 		return ppot.read_pointer.read_string.split("|").map{|e| e.to_f}
 	end
 
+	# @param pocket [String] Hole cards
+	# @param board [String] Board cards
+	# @return [Hash] Probability of hitting each type of hand
+	# @example
+	#		outs = pe.eval_outs("7s7c", "8h9dJs")
 	def eval_outs(pocket, board)
 		psize = pocket.length / 2
 		bsize = board.length / 2
