@@ -375,11 +375,20 @@ class PokerEval
 
 	# Returns a random pair of cards that are not contained in the given string of cards
 	def get_random_hand_not_in_str(str)
+		get_random_cards_not_in_str(str)
+	end
+
+	def get_random_cards_not_in_str(str, i = 2)
 		used = get_cards(str)
 		cards = new_cards
-		add_random_card_not_in(cards, used)
-		add_random_card_not_in(cards, used)
+		i.times do
+			add_random_card_not_in(cards, used)
+		end
 		return cards.to_s
+	end
+
+	def get_random_card_not_in_str(str)
+		get_random_cards_not_in_str(str, 1)
 	end
 
 	# Adds one random card that's not in the given set of used cards 
