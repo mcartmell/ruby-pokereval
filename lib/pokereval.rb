@@ -118,11 +118,19 @@ class PokerEval
 	]
 
 	Ranks = {
-		A: 14,
-		K: 13,
-		Q: 12,
-		J: 11,
-		T: 10
+		'A' => 14,
+		'K' => 13,
+		'Q' => 12,
+		'J' => 11,
+		'T' => 10,
+		'9' => 9,
+		'8' => 8,
+		'7' => 7,
+		'6' => 6, 
+		'5' => 5,
+		'4' => 4,
+		'3' => 3,
+		'2' => 2
 	}
 
 	HandGroups = {
@@ -280,6 +288,60 @@ class PokerEval
 
 		equity = (ahead+tied/2.0) / (ahead+tied+behind)
 		return equity
+	end
+
+	def mc_hand_potential(ours, board, num_iter = 100)
+		set_sizes = [2,1]
+		dead = ours.clone
+		dead << board
+
+		our_current = ours.clone
+		our_current << board
+		our_rank = our_current.eval(our_current.count)
+
+		hp = [[], [], []]
+
+		montecarlo_sets(set_sizes, dead, num_iter) do |sets|
+			our_hand = ours.clone
+			board_cards = board.clone
+			our_hand << board_cards
+
+			opp = sets.pop
+			bc = sets.pop
+
+			opp_current = opp.clone
+			opp_current << board
+			opp_rank = opp_current.eval(opp_current.count)
+
+			cur_idx = if our_rank > opp_rank
+									0
+								elsif opp_rank > our_rank
+									2
+								else
+									1
+								end
+
+			our_next = our_current.clone
+			our_next << bc
+
+			opp_next = opp_current.clone
+			opp_next << bc
+
+			our_next_rank = our_next.eval(our_next.count)
+			opp_next_rank = opp_next.eval(opp_next.count)
+
+			next_idx = if our_next_rank > opp_next_rank
+									 0
+								 elsif opp_next_rank > our_next_rank
+									 2
+								 else
+									 1
+								 end
+			hp[cur_idx][next_idx] ||= 0
+			hp[cur_idx][next_idx] += 1
+		end
+		ppot = ((hp[2][0] || 0) / 100.to_f)
+		return ppot
 	end
 
 	# Returns the hand potential (positive and negative) of the current hand
@@ -445,11 +507,11 @@ class PokerEval
 	end
 
 	def rank_to_num(rank)
-		return Ranks[rank.to_sym] || rank.to_i
+		return Ranks[rank]
 	end
 
 	def card_rank(card)
-		return Ranks[card[0].to_sym] || card[0].to_i
+		return Ranks[card[0]]
 	end
 
 	# Returns a short abbreviation of the current hand, eg. AA, AKs or AKo
@@ -457,14 +519,18 @@ class PokerEval
 	# @return [String] The abbreviation for the given hand
 	def str_to_abbr(str)
 		chars = str.split(//)
-		ranks = [chars[0], chars[2]].sort {|b,a| (Ranks[a.to_sym] || a.to_i) <=> (Ranks[b.to_sym] || b.to_i)}
+
+		if (Ranks[chars[2]] > Ranks[chars[0]])
+			chars = [chars[2], chars[3], chars[0], chars[1]]
+		end
+
 		suited = ''
 		if chars[1] == chars[3] 
 			suited = 's'
 		elsif chars[0] != chars[2]
 			suited = 'o'
 		end
-		return ranks.join('') + suited
+		return chars[0] + chars[2] + suited
 	end
 
 	# Returns the rank of the card as an integer

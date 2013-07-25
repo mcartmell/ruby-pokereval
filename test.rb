@@ -1,15 +1,48 @@
-load '../merlion/lib/merlion/bot.rb'
+#load '../merlion/lib/merlion/bot.rb'
+require 'benchmark'
 require 'pokereval'
 require 'ruby-prof'
 board = "2h3h8d"
-p1 = "4h8h"
+p1 = "4h5h"
 p2 = "7s2d"
-p3 = "AsAc"
+p3 = "AsAc2h"
 pe = PokerEval.new
 
 p3c = pe.get_cards(p1)
 bc = pe.get_cards(board)
 
+p p3c.any_set(bc)
+
+wt = {}
+(0..51).each do |o|
+  (0..o).each do |t|
+    next if o == t
+    cards = pe.new_cards
+    cards.set(o)
+    cards.set(t)
+    wt[cards.cards_n] = 1
+  end
+end
+
+used_cards = pe.get_cards(board)
+
+ppot = pe.mc_hand_potential(p3c, bc)
+puts ppot
+puts pe.hand_potential(p1, board)
+
+puts Benchmark.measure {
+	wt.keys.each do |cards|
+		cm = PokerEvalAPI::CardMask.new
+		cm[:cards_n] = cards
+		if (cards & used_cards.cards_n) != 0
+			next
+		end
+		str = pe.mask_to_str(cards)
+		#pe.mc_hand_potential(cm, bc)
+		pe.hand_potential(str, board)
+	end
+}
+exit
 
 hand = "2h3h4h8h8h"
 hand2 = "AhAd8c8s9h"
