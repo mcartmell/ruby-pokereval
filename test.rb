@@ -1,4 +1,3 @@
-#load '../merlion/lib/merlion/bot.rb'
 require 'benchmark'
 require 'pokereval'
 require 'ruby-prof'
@@ -11,6 +10,9 @@ pe = PokerEval.new
 p3c = pe.get_cards(p1)
 bc = pe.get_cards(board)
 
+puts pe.hs(p3c, bc)
+puts pe.hand_strength(p1, board)
+exit
 p p3c.any_set(bc)
 
 wt = {}

@@ -184,7 +184,7 @@ class PokerEval
 	# @param use_npot [Boolean] (optional, default false) Whether or not to return the negative potential
 	def effective_hand_strength(pocket, board, hs = nil, use_npot = false)
 		return 0 if pocket.empty? || board.empty?
-		hs ||= hs(pocket, board)
+		hs ||= str_to_hs(pocket, board)
 		(ppot, npot) = hand_potential(pocket, board)
 		npot = 0 unless use_npot
 		ehs = hs * (1 - npot) + (1 - hs) * ppot
