@@ -352,8 +352,13 @@ class PokerEval
 	# @param maxcards [Integer] The maximum number of cards to score (7 is 2-card lookahead, 6 is 1-card)
 	# @return [Array] 
 	def hand_potential(pocket, board, maxcards = 6)
-		if ((board.length / 2) == 5)
+		cards = board.length / 2
+		if (cards == 5)
 			return [0,0]
+		elsif cards == 4
+			maxcards = 7
+		else
+			maxcards = 6
 		end
 		ppot = FFI::MemoryPointer.new(:pointer, 1);
 		PokerEvalAPI.handPotential(pocket, board, ppot, maxcards)

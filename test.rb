@@ -1,19 +1,14 @@
 require 'benchmark'
 require 'pokereval'
 require 'ruby-prof'
-board = "2h3h8d"
-p1 = "4h5h"
+board = "Qs6s8d3h"
+p1 = "9sAh"
 p2 = "7s2d"
 p3 = "AsAc2h"
 pe = PokerEval.new
 
 p3c = pe.get_cards(p1)
 bc = pe.get_cards(board)
-
-puts pe.hs(p3c, bc)
-puts pe.hand_strength(p1, board)
-exit
-p p3c.any_set(bc)
 
 wt = {}
 (0..51).each do |o|
@@ -31,6 +26,8 @@ used_cards = pe.get_cards(board)
 ppot = pe.mc_hand_potential(p3c, bc)
 puts ppot
 puts pe.hand_potential(p1, board)
+puts pe.hand_potential(p1, "Qs6s8d")
+exit
 
 puts Benchmark.measure {
 	wt.keys.each do |cards|
