@@ -13,6 +13,10 @@ module PokerEvalAPI
 		:hearts, :uint16
 	end
 
+	class HandPotential < FFI::Struct
+		layout :ppot, :float, :npot, :float
+	end
+
 	# A struct representing a cardmask
 	class CardMask < FFI::Struct
 		layout :cards_n, :uint64
@@ -88,7 +92,7 @@ module PokerEvalAPI
 	attach_function :StdDeck_StdRules_EVAL_TYPE, [CardMask.by_value, :int], :int
 	attach_function :StdDeck_StdRules_EVAL_N, [CardMask.by_value, :int], :int
 	attach_function :handStrength, [CardMask.by_value, CardMask.by_value], :double
-	attach_function :handPotential, [:string, :string, :pointer, :int], :int
+	attach_function :handPotential, [:string, :string, :int], HandPotential.by_value
 	attach_function :evalOuts, [:string, :int, :string, :int, :int, :completion_function], :int
 	attach_function :scoreTwoCards, [:string, :string, :completion_function], :int
 	attach_function :Eval_Str_N, [:string], :int
@@ -360,9 +364,8 @@ class PokerEval
 		else
 			maxcards = 6
 		end
-		ppot = FFI::MemoryPointer.new(:pointer, 1);
-		PokerEvalAPI.handPotential(pocket, board, ppot, maxcards)
-		return ppot.read_pointer.read_string.split("|").map{|e| e.to_f}
+		hpot = PokerEvalAPI.handPotential(pocket, board, maxcards)
+		return [hpot[:ppot], hpot[:npot]]
 	end
 
 	# @param pocket [String] Hole cards

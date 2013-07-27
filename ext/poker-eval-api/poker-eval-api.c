@@ -347,12 +347,12 @@ void handPotInner(HandVal ourrank, int hp[][3], int hptotal[], StdDeck_CardMask 
 	DECK_ENUMERATE_N_CARDS_D(StdDeck, turnriver, i, dead, handPotInnerInner(turnriver, ourcards, oppcards, board, index, hp, maxcards););
 }
 
-int handPotential(char* str_pocket, char* str_board, char** ppot, int maxcards) {
+HandPotential handPotential(char* str_pocket, char* str_board, int maxcards) {
 	int hp[3][3] = {{0}};
 	int hptotal[3] = {0};
 	int nboard;
 	float mult, ppott, npott, ppct, npct;
-	char tmpout[80];
+	HandPotential hpot;
 	HandVal ourrank;
 	
 	StdDeck_CardMask board;
@@ -383,10 +383,10 @@ int handPotential(char* str_pocket, char* str_board, char** ppot, int maxcards) 
 	ppct = ppott / (mult * (hptotal[0] + hptotal[1] / 2.0));
 	npott = (hp[2][0] + hp[1][0]/2 + hp[2][1]/2);
 	npct = npott / (mult * (hptotal[2] + hptotal[1] / 2.0));
-  sprintf( tmpout, "%f|%f",ppct,npct);
-	*ppot = strdup(tmpout);
+	hpot.ppot = ppct;
+	hpot.npot = npct;
 
-	return 1;
+	return hpot;
 }
 
 int evalOuts(char* str_pocket, int npockets, char* str_board, int nboard, int totboard, void *callback(int, StdDeck_CardMask)) {
