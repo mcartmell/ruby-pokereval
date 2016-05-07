@@ -365,7 +365,9 @@ class PokerEval
 			maxcards = 6
 		end
 		hpot = PokerEvalAPI.handPotential(pocket, board, maxcards)
-		return [hpot[:ppot], hpot[:npot]]
+    ppot = hpot[:ppot].nan? ? 1.0 : hpot[:ppot]
+    npot = hpot[:npot].nan? ? 1.0 : hpot[:npot]
+		return [ppot, npot]
 	end
 
 	# @param pocket [String] Hole cards
